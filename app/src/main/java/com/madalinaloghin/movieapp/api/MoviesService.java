@@ -1,5 +1,8 @@
 package com.madalinaloghin.movieapp.api;
 
+import com.madalinaloghin.movieapp.api.response.ResponsePopularMovies;
+import com.madalinaloghin.movieapp.api.response.ResponsePopularPeople;
+import com.madalinaloghin.movieapp.api.response.ResponsePopularTvSeries;
 import com.madalinaloghin.util.object.User;
 
 import retrofit2.Call;
@@ -22,8 +25,17 @@ public interface MoviesService {
                                 @Query("request_token") String token);
 
 
+    @GET("person/popular")
+    Call<ResponsePopularPeople> queryPopularPersons(@Query("api_key") String apiKey,
+                                                    @Query("page") int page);
 
+    @GET("movie/popular")
+    Call<ResponsePopularMovies> queryPopularMovies(@Query("api_key") String apiKey,
+                                                    @Query("page") int page);
 
+    @GET("tv/popular")
+    Call<ResponsePopularTvSeries> queryPopularTvSeries(@Query("api_key") String apiKey,
+                                                    @Query("page") int page);
 
 
 }

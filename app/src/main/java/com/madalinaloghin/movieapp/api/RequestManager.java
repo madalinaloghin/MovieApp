@@ -8,6 +8,10 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.madalinaloghin.movieapp.R;
+import com.madalinaloghin.movieapp.api.response.ResponsePopularMovies;
+import com.madalinaloghin.movieapp.api.response.ResponsePopularPeople;
+import com.madalinaloghin.movieapp.api.response.ResponsePopularTvSeries;
+import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.User;
 
 import retrofit2.Call;
@@ -68,7 +72,28 @@ public class RequestManager {
         }
     }
 
+    public void queryPopularMovies(final int page, @Nullable final Callback<ResponsePopularMovies> callback){
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponsePopularMovies> call = service.queryPopularMovies(getApiKey(), page);
+        if(call !=null){
+            call.enqueue(callback);
+        }
+    }
 
+    public void queryPopularPeople(final int page, @Nullable final Callback<ResponsePopularPeople> callback){
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponsePopularPeople> call = service.queryPopularPersons(getApiKey(),page);
+        if(call !=null){
+            call.enqueue(callback);
+        }
+    }
+    public void queryPopularTvSeries(final int page, @Nullable final Callback<ResponsePopularTvSeries> callback){
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponsePopularTvSeries> call = service.queryPopularTvSeries(getApiKey(),page);
+        if(call !=null){
+            call.enqueue(callback);
+        }
+    }
 
 
 }

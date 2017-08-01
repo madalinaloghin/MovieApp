@@ -17,17 +17,18 @@
             android:layout_width="@dimen/iv_poster_popular_width"
             android:layout_height="@dimen/iv_poster_popular_height"
             android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp" />
+            android:background="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/tv_title_name"
             style="@style/SubHeadingFont"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/iv_poster_popular_width"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/iv_image_popular"
             android:layout_centerInParent="true"
             android:maxLines="2"
             tools:text="Title movie"
+            android:background="@color/colorWhite"
             />
 
     </RelativeLayout>
