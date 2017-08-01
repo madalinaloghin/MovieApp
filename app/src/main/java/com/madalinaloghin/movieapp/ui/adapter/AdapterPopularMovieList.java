@@ -17,9 +17,6 @@ public class AdapterPopularMovieList extends AppCompatActivity {
 
 
 
-    private List<Movie> mDataMovies;
-    private List<TvSeries> mDataTvSeries;
-    private List<Person> mDataActor;
 
 
 
