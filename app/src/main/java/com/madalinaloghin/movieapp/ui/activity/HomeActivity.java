@@ -2,8 +2,10 @@ package com.madalinaloghin.movieapp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
@@ -24,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends BottomNavigationBaseActivity {
-
 
     @BindView(R.id.rv_actors_popular)
     RecyclerView rvActorsPopular;
@@ -48,10 +49,12 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     private int mCurrentPagePersons = 0;
     private int mCurrentPageTvSeries = 0;
 
+
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_home);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
 

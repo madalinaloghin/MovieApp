@@ -9,21 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <SearchView
-            android:id="@+id/sv_search_bar_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:foregroundGravity="right"
-            android:tooltipText="something"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
-
         <TextView
             android:id="@+id/tv_popular_movies_home"
-            style="@style/HeadlineFont"
+            style="@style/TitleFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sv_search_bar_home"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:text="@string/section_popular_movies_home" />
@@ -34,12 +24,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_popular_movies_home"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
-            android:background="@color/colorPrimaryDark"
             android:minHeight="@dimen/rv_min_height" />
 
         <TextView
             android:id="@+id/tv_popular_tv_series_home"
-            style="@style/HeadlineFont"
+            style="@style/TitleFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rv_movie_popular"
@@ -54,12 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_popular_tv_series_home"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
-            android:background="@color/colorPrimaryDark"
             android:minHeight="@dimen/rv_min_height" />
 
         <TextView
             android:id="@+id/tv_popular_actors_home"
-            style="@style/HeadlineFont"
+            style="@style/TitleFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rv_tv_series_popular"
@@ -73,7 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_popular_actors_home"
-            android:background="@color/colorPrimaryDark"
             android:minHeight="@dimen/rv_min_height" />
 
 

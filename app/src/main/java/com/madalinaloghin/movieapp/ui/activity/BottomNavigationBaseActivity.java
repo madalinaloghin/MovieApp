@@ -2,9 +2,11 @@ package com.madalinaloghin.movieapp.ui.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,11 +19,14 @@ import butterknife.ButterKnife;
 
 public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
 
+    @Nullable
     @BindView(R.id.bn_bottom_menu)
     BottomNavigationView navigation;
 
+    @Nullable
     @BindView(R.id.fl_basic_activity)
     FrameLayout frameParent;
+
 
 
     protected void onCreate(Bundle savedInstanceState, final int layout) {
