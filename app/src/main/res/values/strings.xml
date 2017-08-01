@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Movie Database</string>
+
+    <string name="api_key">d9695f4d017fcc9799ede07d46dd40c7</string>
+    <string name="token_session">cf1bacd1887cb574dfcefa421ea256d93cd549b5</string>
+
+    <string name="session_id">3576a3430a24521a5a5600fbe22ee4eb7a57721f</string>
+
+    <string name="base_url">https://api.themoviedb.org/3/</string>
+
+    <string name="home_activity">Home</string>
+    <string name="lists_activity">Lists</string>
+    <string name="favs_activity">Favs</string>
+    <string name="account_activity">Account</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_lists">ListsActivity</string>
+    <string name="title_activity_favs">FavsActivity</string>
+    <string name="title_activity_account">AccountActivity</string>
+
+    <string name="section_popular_movies_home">Popular Movies</string>
+    <string name="section_popular_tv_series_home">Popular TV Shows</string>
+    <string name="section_popular_actors_home">Popular Actors</string>
+
+
+</resources>

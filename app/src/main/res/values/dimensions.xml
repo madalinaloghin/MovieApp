@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="test">8dp</dimen>
+
+    <dimen name="textview_margin_right_left">15dp</dimen>
+    <dimen name="textview_margin_top_bottom">10dp</dimen>
+    <dimen name="rv_min_height">150dp</dimen>
+
+    <dimen name="iv_poster_popular_width">100dp</dimen>
+    <dimen name="iv_poster_popular_height">150dp</dimen>
+
+</resources>
