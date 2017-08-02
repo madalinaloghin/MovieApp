@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:background="@color/colorPrimaryDark">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,11 +11,12 @@
 
         <TextView
             android:id="@+id/tv_popular_movies_home"
-            style="@style/TitleFont"
+            style="@style/AppBarFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
+            android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:text="@string/section_popular_movies_home" />
 
         <android.support.v7.widget.RecyclerView
@@ -28,7 +29,7 @@
 
         <TextView
             android:id="@+id/tv_popular_tv_series_home"
-            style="@style/TitleFont"
+            style="@style/AppBarFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rv_movie_popular"
@@ -47,7 +48,7 @@
 
         <TextView
             android:id="@+id/tv_popular_actors_home"
-            style="@style/TitleFont"
+            style="@style/AppBarFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rv_tv_series_popular"
@@ -61,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_popular_actors_home"
-            android:minHeight="@dimen/rv_min_height" />
-
+            android:minHeight="@dimen/rv_min_height"
+            android:layout_marginBottom="@dimen/textview_margin_top_bottom"/>
 
     </RelativeLayout>
 

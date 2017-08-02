@@ -2,13 +2,14 @@ package com.madalinaloghin.util.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by madalina.loghin on 8/1/2017.
  */
 
-public class Movie {
+public class Movie implements Serializable {
 
     @SerializedName("id")
     private int id;
@@ -87,7 +88,7 @@ public class Movie {
 
     public String getImageUrl() {
         String url = "https://image.tmdb.org/t/p/w500" + imageUrl;
-        return imageUrl;
+        return url;
     }
 
 

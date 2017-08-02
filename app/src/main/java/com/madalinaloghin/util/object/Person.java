@@ -66,6 +66,7 @@ public class Person {
     }
 
     public String getImagePath() {
-        return imagePath;
+        String url = "https://image.tmdb.org/t/p/w500" + imagePath;
+        return url;
     }
 }

@@ -36,13 +36,21 @@ public class AdapterPopularTvSeriesList extends RecyclerView.Adapter<AdapterPopu
     public void setItems(@NonNull List<TvSeries> data) {
         if (mDataTvSeries == null) {
             mDataTvSeries = new ArrayList<>();
+        } else{
+            mDataTvSeries.clear();
+        }
+        mDataTvSeries.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void addItems(@NonNull final List<TvSeries> data) {
+        if (mDataTvSeries == null) {
+            mDataTvSeries = new ArrayList<>();
         }
         int count = mDataTvSeries.size();
         mDataTvSeries.addAll(data);
         notifyItemRangeInserted(count, data.size());
     }
-
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -67,9 +75,6 @@ public class AdapterPopularTvSeriesList extends RecyclerView.Adapter<AdapterPopu
         @BindView(R.id.iv_image_popular)
         ImageView image;
 
-        @BindView(R.id.tv_title_name)
-        TextView title;
-
         private OnItemClickedListener mListener;
 
 
@@ -82,7 +87,6 @@ public class AdapterPopularTvSeriesList extends RecyclerView.Adapter<AdapterPopu
 
         public void bind(final TvSeries tvseries) {
             Glide.with(itemView.getContext()).load(tvseries.getPosterUrl()).into(image);
-            title.setText(tvseries.getTitle());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -2,13 +2,14 @@ package com.madalinaloghin.util.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by madalina.loghin on 8/1/2017.
  */
 
-public class TvSeries {
+public class TvSeries implements Serializable {
 
 
     @SerializedName("backdrop_path")
@@ -61,7 +62,8 @@ public class TvSeries {
 
 
     public String getImageUrl() {
-        return imageUrl;
+        String url = "https://image.tmdb.org/t/p/w500" + imageUrl;
+        return url;
     }
 
     public ArrayList<Person> getCreatedBy() {
@@ -97,7 +99,8 @@ public class TvSeries {
     }
 
     public String getPosterUrl() {
-        return posterUrl;
+        String url = "https://image.tmdb.org/t/p/w500" + posterUrl;
+        return url;
     }
 
     public String getTitle() {

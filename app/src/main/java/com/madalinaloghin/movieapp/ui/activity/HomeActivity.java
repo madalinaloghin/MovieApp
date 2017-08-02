@@ -1,11 +1,10 @@
 package com.madalinaloghin.movieapp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
@@ -27,6 +26,9 @@ import retrofit2.Response;
 
 public class HomeActivity extends BottomNavigationBaseActivity {
 
+    private static final String KEY_MOVIE = "Movie";
+    private static final String KEY_TV = "Tv";
+
     @BindView(R.id.rv_actors_popular)
     RecyclerView rvActorsPopular;
 
@@ -42,8 +44,13 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     private AdapterPopularTvSeriesList adapterTvSeriesList;
 
 
-    private LinearLayoutManager mLayoutManager;
-    private boolean mIsLoading = false;
+    private LinearLayoutManager mLayoutManagerMovies;
+    private LinearLayoutManager mLayoutManagerTvSeries;
+    private LinearLayoutManager mLayoutManagerPersons;
+
+    private boolean mIsLoadingMovies = false;
+    private boolean mIsLoadingTvSeries = false;
+    private boolean mIsLoadingPerson = false;
 
     private int mCurrentPageMovies = 0;
     private int mCurrentPagePersons = 0;
@@ -62,29 +69,37 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         setupRecycleViewMTvSeries();
         setupRecycleViewActors();
 
+        getPopularMovies();
+        getPopularTvSeries();
+        getPopularPersons();
+        ;
     }
 
     private void setupRecycleViewMovies() {
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvMoviesPopular.setLayoutManager(mLayoutManager);
-
+        mLayoutManagerMovies = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvMoviesPopular.setLayoutManager(mLayoutManagerMovies);
         adapterMovieList = new AdapterPopularMovieList(new AdapterPopularMovieList.OnItemClickedListener() {
             @Override
             public void onItemClick(Movie movie) {
-
+                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
+                Bundle bundle  = new Bundle();
+                bundle.putSerializable(KEY_MOVIE, movie);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
         rvMoviesPopular.setAdapter(adapterMovieList);
+
         rvMoviesPopular.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mIsLoading || dy <= 0) {
+                if (mIsLoadingMovies || dx <= 0) {
                     return;
                 }
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mLayoutManagerMovies.getChildCount();
+                int totalItemCount = mLayoutManagerMovies.getItemCount();
+                int pastVisiblesItems = mLayoutManagerMovies.findFirstVisibleItemPosition();
 
                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                     getPopularMovies();
@@ -94,24 +109,28 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     }
 
     private void setupRecycleViewMTvSeries() {
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvTvSeriesPopular.setLayoutManager(mLayoutManager);
+        mLayoutManagerTvSeries = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvTvSeriesPopular.setLayoutManager(mLayoutManagerTvSeries);
         adapterTvSeriesList = new AdapterPopularTvSeriesList(new AdapterPopularTvSeriesList.OnItemClickedListener() {
             @Override
             public void onItemClick(TvSeries tvSeries) {
-
+                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
+                Bundle bundle  = new Bundle();
+                bundle.putSerializable(KEY_TV, tvSeries);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         rvTvSeriesPopular.setAdapter(adapterTvSeriesList);
         rvTvSeriesPopular.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mIsLoading || dy <= 0) {
+                if (mIsLoadingTvSeries || dx <= 0) {
                     return;
                 }
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mLayoutManagerTvSeries.getChildCount();
+                int totalItemCount = mLayoutManagerTvSeries.getItemCount();
+                int pastVisiblesItems = mLayoutManagerTvSeries.findFirstVisibleItemPosition();
 
                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                     getPopularTvSeries();
@@ -123,8 +142,8 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     }
 
     private void setupRecycleViewActors() {
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvActorsPopular.setLayoutManager(mLayoutManager);
+        mLayoutManagerPersons = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvActorsPopular.setLayoutManager(mLayoutManagerPersons);
         adapterPeopleList = new AdapterPopularPeopleList(new AdapterPopularPeopleList.OnItemClickedListener() {
             @Override
             public void onItemClick(Person person) {
@@ -135,12 +154,12 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         rvActorsPopular.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mIsLoading || dy <= 0) {
+                if (mIsLoadingPerson || dx <= 0) {
                     return;
                 }
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mLayoutManagerPersons.getChildCount();
+                int totalItemCount = mLayoutManagerPersons.getItemCount();
+                int pastVisiblesItems = mLayoutManagerPersons.findFirstVisibleItemPosition();
 
                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                     getPopularPersons();
@@ -152,18 +171,23 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
     private void getPopularMovies() {
         mCurrentPageMovies++;
+        mIsLoadingMovies = true;
         RequestManager.getInstance(this).queryPopularMovies(
                 mCurrentPageMovies,
                 new Callback<ResponsePopularMovies>() {
                     @Override
                     public void onResponse(Call<ResponsePopularMovies> call, Response<ResponsePopularMovies> response) {
-                        adapterMovieList.setItems(response.body().getResultsList());
-                        mIsLoading = false;
+                        if (mCurrentPageMovies == 1) {
+                            adapterMovieList.setItems(response.body().getResultsList());
+                        } else {
+                            adapterMovieList.addItems(response.body().getResultsList());
+                        }
+                        mIsLoadingMovies = false;
                     }
 
                     @Override
                     public void onFailure(Call<ResponsePopularMovies> call, Throwable t) {
-                        mIsLoading = false;
+                        mIsLoadingMovies = false;
                     }
                 }
 
@@ -172,18 +196,23 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
     private void getPopularTvSeries() {
         mCurrentPageTvSeries++;
+        mIsLoadingTvSeries = true;
         RequestManager.getInstance(this).queryPopularTvSeries(
                 mCurrentPageTvSeries,
                 new Callback<ResponsePopularTvSeries>() {
                     @Override
                     public void onResponse(Call<ResponsePopularTvSeries> call, Response<ResponsePopularTvSeries> response) {
-                        adapterTvSeriesList.setItems(response.body().getResultsList());
-                        mIsLoading = false;
+                        if (mCurrentPageTvSeries == 1) {
+                            adapterTvSeriesList.setItems(response.body().getResultsList());
+                        } else {
+                            adapterTvSeriesList.addItems(response.body().getResultsList());
+                        }
+                        mIsLoadingTvSeries = false;
                     }
 
                     @Override
                     public void onFailure(Call<ResponsePopularTvSeries> call, Throwable t) {
-                        mIsLoading = false;
+                        mIsLoadingTvSeries = false;
                     }
                 }
         );
@@ -192,18 +221,23 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
     private void getPopularPersons() {
         mCurrentPagePersons++;
+        mIsLoadingPerson = true;
         RequestManager.getInstance(this).queryPopularPeople(
                 mCurrentPagePersons,
                 new Callback<ResponsePopularPeople>() {
                     @Override
                     public void onResponse(Call<ResponsePopularPeople> call, Response<ResponsePopularPeople> response) {
-                        adapterPeopleList.setItems(response.body().getResultsList());
-                        mIsLoading = false;
+                        if (mCurrentPagePersons == 1) {
+                            adapterPeopleList.setItems(response.body().getResultsList());
+                        } else {
+                            adapterPeopleList.addItems(response.body().getResultsList());
+                        }
+                        mIsLoadingPerson = false;
                     }
 
                     @Override
                     public void onFailure(Call<ResponsePopularPeople> call, Throwable t) {
-                        mIsLoading = false;
+                        mIsLoadingPerson = false;
                     }
                 }
         );

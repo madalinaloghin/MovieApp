@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by madalina.loghin on 7/31/2017.
  */
 
+
 public class RequestManager {
 
     private static RequestManager instance;
@@ -87,6 +88,7 @@ public class RequestManager {
             call.enqueue(callback);
         }
     }
+
     public void queryPopularTvSeries(final int page, @Nullable final Callback<ResponsePopularTvSeries> callback){
         MoviesService service = mRetrofit.create(MoviesService.class);
         Call<ResponsePopularTvSeries> call = service.queryPopularTvSeries(getApiKey(),page);

@@ -39,12 +39,21 @@ public class AdapterPopularMovieList extends RecyclerView.Adapter<AdapterPopular
     public void setItems(@NonNull List<Movie> data) {
         if (mDataMovies == null) {
             mDataMovies = new ArrayList<>();
+        } else {
+            mDataMovies.clear();
+        }
+        mDataMovies.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void addItems(@NonNull final List<Movie> data) {
+        if (mDataMovies == null) {
+            mDataMovies = new ArrayList<>();
         }
         int count = mDataMovies.size();
         mDataMovies.addAll(data);
         notifyItemRangeInserted(count, data.size());
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,21 +77,16 @@ public class AdapterPopularMovieList extends RecyclerView.Adapter<AdapterPopular
         @BindView(R.id.iv_image_popular)
         ImageView image;
 
-        @BindView(R.id.tv_title_name)
-        TextView title;
-
         private OnItemClickedListener mListener;
 
         public ViewHolder(View itemView, OnItemClickedListener listener) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             this.mListener = listener;
         }
 
         public void bind(final Movie movie) {
             Glide.with(itemView.getContext()).load(movie.getPosterUrl()).into(image);
-            title.setText(movie.getTitle());
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -34,8 +34,17 @@ public class AdapterPopularPeopleList extends RecyclerView.Adapter<AdapterPopula
         mListener = listener;
     }
 
-
     public void setItems(@NonNull List<Person> data) {
+        if (mDataPerson == null) {
+            mDataPerson = new ArrayList<>();
+        } else{
+            mDataPerson.clear();
+        }
+        mDataPerson.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void addItems(@NonNull final List<Person> data) {
         if (mDataPerson == null) {
             mDataPerson = new ArrayList<>();
         }
@@ -43,7 +52,6 @@ public class AdapterPopularPeopleList extends RecyclerView.Adapter<AdapterPopula
         mDataPerson.addAll(data);
         notifyItemRangeInserted(count, data.size());
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,10 +73,6 @@ public class AdapterPopularPeopleList extends RecyclerView.Adapter<AdapterPopula
 
         @BindView(R.id.iv_image_popular)
         ImageView image;
-
-        @BindView(R.id.tv_title_name)
-        TextView title;
-
         private OnItemClickedListener mListener;
 
         public ViewHolder(View itemView, OnItemClickedListener listener) {
@@ -79,9 +83,7 @@ public class AdapterPopularPeopleList extends RecyclerView.Adapter<AdapterPopula
 
         public void bind(final Person person) {
             Glide.with(itemView.getContext()).load(person.getImagePath()).into(image);
-            title.setText(person.getName());
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mListener.onItemClick(person);
