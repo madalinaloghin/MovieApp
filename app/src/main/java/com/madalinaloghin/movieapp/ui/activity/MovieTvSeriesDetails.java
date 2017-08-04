@@ -1,23 +1,23 @@
 package com.madalinaloghin.movieapp.ui.activity;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
+import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieTvSeriesDetails extends AppCompatActivity {
-
-    private static final String KEY_MOVIE = "Movie";
-    private static final String KEY_TV = "Tv";
 
     private Movie movie;
     private TvSeries tvSeries;
@@ -34,45 +34,75 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
     @BindView(R.id.tv_description_movie_tv_series)
     TextView tvDescriptionMovieTitle;
 
+    @BindView(R.id.tv_vote_average)
+    TextView tvVoteAverage;
+
     @BindView(R.id.tv_release_date_movie_tv_series)
     TextView tvReleaseDate;
 
+    @BindView(R.id.tb_favorite_movie_toggle)
+    ToggleButton tbFavoriteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_tv_series_details);
-        Intent intent = getIntent();
         Bundle b = getIntent().getExtras();
-
         ButterKnife.bind(this);
 
-        if(b.getSerializable(KEY_MOVIE) != null){
+        if (b.getSerializable(Categories.MOVIE) != null) {
             movie = new Movie();
-            movie = (Movie) b.getSerializable(KEY_MOVIE);
+            movie = (Movie) b.getSerializable(Categories.MOVIE);
             updateMovieInfo();
-        } else{
+
+        } else {
             tvSeries = new TvSeries();
-            tvSeries = (TvSeries) b.getSerializable(KEY_TV);
+            tvSeries = (TvSeries) b.getSerializable(Categories.TV_SERIES);
             updateTvSeriesInfo();
         }
-
     }
 
-    void updateMovieInfo(){
+    @OnClick(R.id.iv_image_poster_movie_series)
+    void clickImage() {
+        Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite), Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.tb_favorite_movie_toggle)
+    void onClickFavoriteButton() {
+        int id;
+        String tip;
+        if (movie == null) {
+            id = tvSeries.getId();
+            tip = Categories.TV_SERIES;
+        } else {
+            id = movie.getId();
+            tip = Categories.MOVIE;
+        }
+
+         //apelat direct cu idul si tipul de aici
+    }
+
+    void updateMovieInfo() {
         Glide.with(this).load(movie.getPosterUrl()).into(ivImagePoster);
         Glide.with(this).load(movie.getImageUrl()).into(ivImageDetail);
         tvDescriptionMovieTitle.setText(movie.getDescription());
         tvMovieSeriesTitle.setText(movie.getTitle());
         tvReleaseDate.setText(movie.getReleaseDate());
-
+        tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
     }
 
-    void updateTvSeriesInfo(){
+    void updateTvSeriesInfo() {
         Glide.with(this).load(tvSeries.getPosterUrl()).into(ivImagePoster);
         Glide.with(this).load(tvSeries.getImageUrl()).into(ivImageDetail);
         tvDescriptionMovieTitle.setText(tvSeries.getDescription());
         tvMovieSeriesTitle.setText(tvSeries.getTitle());
         tvReleaseDate.setText(tvSeries.getFirst_air_date());
+        tvVoteAverage.setText(String.valueOf(tvSeries.getVoteAverage()));
+
+        if (tvSeries.isFavorite) {
+            tbFavoriteButton.setChecked(true);
+        } else {
+            tbFavoriteButton.setChecked(false);
+        }
     }
 }

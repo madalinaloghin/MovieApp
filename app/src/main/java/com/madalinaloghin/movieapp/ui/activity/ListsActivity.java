@@ -12,9 +12,9 @@ public class ListsActivity extends BottomNavigationBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_lists);
-
-
     }
+
+
 
     @Override
     protected BottomNavActivityType getType() {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context="com.madalinaloghin.movieapp.ui.activity.BottomNavigationBaseActivity">
 
@@ -16,13 +17,12 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bn_bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom"
+        android:layout_weight="0.1"
         android:background="@color/colorPrimary"
+        android:foregroundGravity="bottom"
         app:itemTextColor="@color/colorWhite"
-        app:menu="@menu/menu_bottom_navigation"
-        />
-
-
+        app:menu="@menu/menu_bottom_navigation" />
 
 </LinearLayout>

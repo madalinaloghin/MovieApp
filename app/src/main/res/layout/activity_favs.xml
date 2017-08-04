@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.madalinaloghin.movieapp.ui.activity.FavsActivity"
-    android:background="@color/colorAccent">
+    tools:context="com.madalinaloghin.movieapp.ui.activity.FavsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/abl_appbar_favorties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tb_favorites_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorAccent"
+            android:gravity="bottom"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorHighlight"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/colorHighlight"
+            app:tabTextColor="@color/colorPrimary" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_favorites_fragnents"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/abl_appbar_favorties" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

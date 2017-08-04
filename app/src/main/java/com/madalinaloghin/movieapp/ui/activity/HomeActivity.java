@@ -8,34 +8,27 @@ import android.support.v7.widget.RecyclerView;
 
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularMovies;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularPeople;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularTvSeries;
+import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
+import com.madalinaloghin.movieapp.api.response.ResponseListPeople;
+import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularMovieList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularPeopleList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularTvSeriesList;
+import com.madalinaloghin.util.Util;
+import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
+import com.madalinaloghin.util.object.User;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends BottomNavigationBaseActivity {
 
-    private static final String KEY_MOVIE = "Movie";
-    private static final String KEY_TV = "Tv";
-
-    @BindView(R.id.rv_actors_popular)
     RecyclerView rvActorsPopular;
-
-    @BindView(R.id.rv_movie_popular)
     RecyclerView rvMoviesPopular;
-
-    @BindView(R.id.rv_tv_series_popular)
     RecyclerView rvTvSeriesPopular;
 
 
@@ -60,10 +53,15 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        super.onCreate(savedInstanceState,R.layout.activity_home);
 
-        ButterKnife.bind(this);
+        loadInfos();
+    }
+
+    public void loadInfos(){
+        rvActorsPopular = (RecyclerView) findViewById(R.id.rv_actors_popular);
+        rvMoviesPopular = (RecyclerView) findViewById(R.id.rv_movie_popular);
+        rvTvSeriesPopular = (RecyclerView) findViewById(R.id.rv_tv_series_popular);
 
         setupRecycleViewMovies();
         setupRecycleViewMTvSeries();
@@ -72,8 +70,11 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         getPopularMovies();
         getPopularTvSeries();
         getPopularPersons();
-        ;
+
+        getCurrentUser();
+
     }
+
 
     private void setupRecycleViewMovies() {
         mLayoutManagerMovies = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -83,7 +84,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             public void onItemClick(Movie movie) {
                 Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
                 Bundle bundle  = new Bundle();
-                bundle.putSerializable(KEY_MOVIE, movie);
+                bundle.putSerializable(Categories.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -116,7 +117,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             public void onItemClick(TvSeries tvSeries) {
                 Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
                 Bundle bundle  = new Bundle();
-                bundle.putSerializable(KEY_TV, tvSeries);
+                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -137,9 +138,9 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                 }
             }
         });
-
-
     }
+
+
 
     private void setupRecycleViewActors() {
         mLayoutManagerPersons = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -174,9 +175,9 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mIsLoadingMovies = true;
         RequestManager.getInstance(this).queryPopularMovies(
                 mCurrentPageMovies,
-                new Callback<ResponsePopularMovies>() {
+                new Callback<ResponseListMovies>() {
                     @Override
-                    public void onResponse(Call<ResponsePopularMovies> call, Response<ResponsePopularMovies> response) {
+                    public void onResponse(Call<ResponseListMovies> call, Response<ResponseListMovies> response) {
                         if (mCurrentPageMovies == 1) {
                             adapterMovieList.setItems(response.body().getResultsList());
                         } else {
@@ -186,7 +187,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponsePopularMovies> call, Throwable t) {
+                    public void onFailure(Call<ResponseListMovies> call, Throwable t) {
                         mIsLoadingMovies = false;
                     }
                 }
@@ -199,9 +200,9 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mIsLoadingTvSeries = true;
         RequestManager.getInstance(this).queryPopularTvSeries(
                 mCurrentPageTvSeries,
-                new Callback<ResponsePopularTvSeries>() {
+                new Callback<ResponseListTvSeries>() {
                     @Override
-                    public void onResponse(Call<ResponsePopularTvSeries> call, Response<ResponsePopularTvSeries> response) {
+                    public void onResponse(Call<ResponseListTvSeries> call, Response<ResponseListTvSeries> response) {
                         if (mCurrentPageTvSeries == 1) {
                             adapterTvSeriesList.setItems(response.body().getResultsList());
                         } else {
@@ -211,7 +212,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponsePopularTvSeries> call, Throwable t) {
+                    public void onFailure(Call<ResponseListTvSeries> call, Throwable t) {
                         mIsLoadingTvSeries = false;
                     }
                 }
@@ -224,9 +225,9 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mIsLoadingPerson = true;
         RequestManager.getInstance(this).queryPopularPeople(
                 mCurrentPagePersons,
-                new Callback<ResponsePopularPeople>() {
+                new Callback<ResponseListPeople>() {
                     @Override
-                    public void onResponse(Call<ResponsePopularPeople> call, Response<ResponsePopularPeople> response) {
+                    public void onResponse(Call<ResponseListPeople> call, Response<ResponseListPeople> response) {
                         if (mCurrentPagePersons == 1) {
                             adapterPeopleList.setItems(response.body().getResultsList());
                         } else {
@@ -236,12 +237,31 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponsePopularPeople> call, Throwable t) {
+                    public void onFailure(Call<ResponseListPeople> call, Throwable t) {
                         mIsLoadingPerson = false;
                     }
                 }
         );
     }
+
+
+    private void getCurrentUser(){
+        RequestManager.getInstance(this).queryUserAccount(
+                Util.getSessionId,
+                new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        Util.currentUser = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                }
+        );
+    }
+
 
 
     @Override

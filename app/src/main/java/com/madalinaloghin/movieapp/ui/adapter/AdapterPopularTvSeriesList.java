@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
-import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
 
 import java.util.ArrayList;
@@ -82,12 +80,10 @@ public class AdapterPopularTvSeriesList extends RecyclerView.Adapter<AdapterPopu
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.mListener = listener;
-
         }
 
         public void bind(final TvSeries tvseries) {
             Glide.with(itemView.getContext()).load(tvseries.getPosterUrl()).into(image);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -101,4 +97,5 @@ public class AdapterPopularTvSeriesList extends RecyclerView.Adapter<AdapterPopu
     public interface OnItemClickedListener {
         void onItemClick(TvSeries tvSeries);
     }
+
 }

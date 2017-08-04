@@ -7,12 +7,15 @@
     <dimen name="textview_margin_top_bottom">10dp</dimen>
     <dimen name="rv_min_height">150dp</dimen>
 
-    <dimen name="iv_poster_popular_width">130dp</dimen>
-    <dimen name="iv_poster_popular_height">195dp</dimen>
+    <dimen name="iv_poster_popular_width">153dp</dimen>
+    <dimen name="iv_poster_popular_height">230dp</dimen>
 
 
     <dimen name="iv_img_details_width">130dp</dimen>
     <dimen name="iv_img_details_height">195dp</dimen>
+
+    <dimen name="iv_img_banner_movei_details_width">374dp</dimen>
+    <dimen name="iv_img_banner_movie_details_height">210dp</dimen>
 
 
     <dimen name="iv_poster_details_page_margin_top_bottom">50dp</dimen>

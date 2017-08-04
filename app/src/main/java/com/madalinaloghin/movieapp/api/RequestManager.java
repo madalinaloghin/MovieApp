@@ -1,17 +1,16 @@
 package com.madalinaloghin.movieapp.api;
 
 import android.content.Context;
-import android.content.pm.LauncherApps;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.madalinaloghin.movieapp.R;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularMovies;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularPeople;
-import com.madalinaloghin.movieapp.api.response.ResponsePopularTvSeries;
-import com.madalinaloghin.util.object.Movie;
+import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
+import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
+import com.madalinaloghin.movieapp.api.response.ResponseListPeople;
+import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
+import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.User;
 
 import retrofit2.Call;
@@ -44,58 +43,72 @@ public class RequestManager {
                 .create();
 
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(getBaseURL())
+                .baseUrl(Util.getBaseURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
-    public String getBaseURL() {
-        return mAppContext.getResources().getString(R.string.base_url);
-    }
-
-    public String getApiKey() {
-        return mAppContext.getResources().getString(R.string.api_key);
-    }
 
     public void querySessionId(@NonNull final String requestToken, @Nullable final Callback<String> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<String> call = service.querySessionID(getApiKey(), requestToken);
+        Call<String> call = service.querySessionID(Util.getApiKey, requestToken);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryUserAccount(@NonNull final String requestToken, @Nullable final Callback<User> callback) {
+    public void queryUserAccount(@NonNull final String sessionId, @Nullable final Callback<User> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<User> call = service.queryUserAccount(getApiKey(), requestToken);
+        Call<User> call = service.queryUserAccount(Util.getApiKey, sessionId);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularMovies(final int page, @Nullable final Callback<ResponsePopularMovies> callback){
+    public void queryPopularMovies(final int page, @Nullable final Callback<ResponseListMovies> callback){
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponsePopularMovies> call = service.queryPopularMovies(getApiKey(), page);
+        Call<ResponseListMovies> call = service.queryPopularMovies(Util.getApiKey, page);
         if(call !=null){
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularPeople(final int page, @Nullable final Callback<ResponsePopularPeople> callback){
+    public void queryPopularPeople(final int page, @Nullable final Callback<ResponseListPeople> callback){
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponsePopularPeople> call = service.queryPopularPersons(getApiKey(),page);
+        Call<ResponseListPeople> call = service.queryPopularPersons(Util.getApiKey,page);
         if(call !=null){
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularTvSeries(final int page, @Nullable final Callback<ResponsePopularTvSeries> callback){
+    public void queryPopularTvSeries(final int page, @Nullable final Callback<ResponseListTvSeries> callback){
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponsePopularTvSeries> call = service.queryPopularTvSeries(getApiKey(),page);
+        Call<ResponseListTvSeries> call = service.queryPopularTvSeries(Util.getApiKey,page);
         if(call !=null){
             call.enqueue(callback);
         }
     }
 
+
+    public void queryFavoriteMovies(@NonNull final int accountId, final int page, @Nullable final Callback<ResponseListMovies> callback){
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListMovies> call = service.queryFavoriteMovies(accountId, Util.getApiKey, Util.getSessionId,page);
+        if(call != null){
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryFavoriteTvSeries(@NonNull final int accountId, final int page, @Nullable final Callback<ResponseListFavoriteTvSeries> callback){
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListFavoriteTvSeries> call = service.queryFavoriteTvSeries(accountId, Util.getApiKey, Util.getSessionId,page);
+        if(call != null){
+            call.enqueue(callback);
+        }
+    }
+
+    public void markAsFavorite (@NonNull final int accountId, @NonNull final String mediaType, @NonNull final int mediaId, @NonNull final boolean favorite){
+        MoviesService service =  mRetrofit.create(MoviesService.class);
+        //response e un obiect cu code si mesaj
+    }
 
 }

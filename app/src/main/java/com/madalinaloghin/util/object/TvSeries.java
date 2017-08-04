@@ -61,6 +61,9 @@ public class TvSeries implements Serializable {
     private int voteCount;
 
 
+    public boolean isFavorite;
+
+
     public String getImageUrl() {
         String url = "https://image.tmdb.org/t/p/w500" + imageUrl;
         return url;

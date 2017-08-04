@@ -1,7 +1,7 @@
 package com.madalinaloghin.movieapp.api.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.madalinaloghin.util.object.Movie;
+import com.madalinaloghin.util.object.TvSeries;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,12 @@ import java.util.ArrayList;
  * Created by madalina.loghin on 8/1/2017.
  */
 
-public class ResponsePopularMovies {
+public class ResponseListTvSeries {
 
     @SerializedName("results")
-    private ArrayList<Movie> resultsList;
+    private ArrayList<TvSeries> resultsList;
 
-    public ArrayList<Movie> getResultsList() {
+    public ArrayList<TvSeries> getResultsList() {
         return resultsList;
     }
 }

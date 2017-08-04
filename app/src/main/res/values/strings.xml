@@ -24,5 +24,9 @@
     <string name="section_popular_tv_series_home">Popular TV Shows</string>
     <string name="section_popular_actors_home">Popular Actors</string>
 
+    <string name="blank_space"> </string>
+    <string name="iv_content_description_details">Movie poster</string>
 
+    <string name="movies">Movies</string>
+    <string name="tvseries">TvSeries</string>
 </resources>

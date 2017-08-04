@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by madalina.loghin on 8/1/2017.
  */
 
-public class ResponsePopularPeople {
+public class ResponseListPeople {
 
     @SerializedName("results")
     private ArrayList<Person> resultsList;
