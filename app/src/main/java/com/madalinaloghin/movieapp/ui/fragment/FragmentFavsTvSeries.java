@@ -125,4 +125,6 @@ public class FragmentFavsTvSeries extends Fragment {
 
     }
 
+
+
 }

@@ -1,17 +1,19 @@
 package com.madalinaloghin.movieapp.api;
 
+import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListPeople;
 import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
+import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
+import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -47,10 +49,10 @@ public interface MoviesService {
 
 
     @GET("account/{account_id}/favorite/movies")
-    Call<ResponseListMovies> queryFavoriteMovies(@Path("account_id") int accountId,
-                                                 @Query("api_key") String apiKey,
-                                                 @Query("session_id") String sessionId,
-                                                 @Query("page") int page);
+    Call<ResponseListFavoriteMovies> queryFavoriteMovies(@Path("account_id") int accountId,
+                                                         @Query("api_key") String apiKey,
+                                                         @Query("session_id") String sessionId,
+                                                         @Query("page") int page);
 
     @GET("account/{account_id}/favorite/tv")
     Call<ResponseListFavoriteTvSeries> queryFavoriteTvSeries(@Path("account_id") int accountId,
@@ -59,24 +61,34 @@ public interface MoviesService {
                                                              @Query("page") int page);
 
 
-    @GET("account/{account_id}/lists")
-    Call<ResponseUserLists> queryUserLists(@Path("account_id") int accountId,
-                                           @Query("api_key") String apiKey,
-                                           @Query("session_id") String sessionId);
-
-    @GET("list/{list_id}")
-    Call<List> querySpecificUserList(@Path("list_id") int listId,
-                                     @Query("api_key") String apiKey,
-                                     @Query("session_id") String sessionId);
-
+    @FormUrlEncoded
     @POST("account/{account_id}/favorite")
-    Call<TvSeries> updateTvSeriesFavorite(@Path("account_id") int accountId,
+    Call<TvSeries> updateTvSeriesMarkAsFavorite(@Path("account_id") int accountId,
+                                                @Query("api_key") String apiKey,
+                                                @Query("session_id") String sessionId,
+                                                @Field("media_type") String mediaType,
+                                                @Field("media_id") int mediaId,
+                                                @Field("favorite") boolean favorite);
+
+    @FormUrlEncoded
+    @POST("account/{account_id}/favorite")
+    Call<Movie> updateMovieMarkAsFavorite(@Path("account_id") int accountId,
                                           @Query("api_key") String apiKey,
                                           @Query("session_id") String sessionId,
                                           @Field("media_type") String mediaType,
                                           @Field("media_id") int mediaId,
-                                          @Field("favorite") Boolean favorite);
+                                          @Field("favorite") boolean favorite);
 
-    
+
+    @GET("account/{account_id}/lists")
+    Call<ResponseUserLists> queryUserLists(@Path("account_id") int accountId,
+                                           @Query("api_key") String apiKey,
+                                           @Query("session_id") String sessionId,
+                                           @Query("page") int page);
+
+    @GET("list/{list_id}")
+    Call<ResponseUserListDetails> queryListDetails(@Path("list_id") int listId,
+                                                   @Query("api_key") String apiKey);
+
 
 }

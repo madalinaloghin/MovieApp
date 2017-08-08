@@ -141,7 +141,6 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     }
 
 
-
     private void setupRecycleViewActors() {
         mLayoutManagerPersons = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvActorsPopular.setLayoutManager(mLayoutManagerPersons);

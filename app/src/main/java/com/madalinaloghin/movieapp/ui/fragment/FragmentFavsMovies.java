@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
-import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
+import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteMovies;
 import com.madalinaloghin.movieapp.ui.activity.MovieTvSeriesDetails;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterFavsMovies;
 import com.madalinaloghin.util.Util;
@@ -103,9 +103,9 @@ public class FragmentFavsMovies extends Fragment {
         RequestManager.getInstance(this.getContext()).queryFavoriteMovies(
                 Util.currentUser.getId(),
                 mCurrentPage,
-                new Callback<ResponseListMovies>() {
+                new Callback<ResponseListFavoriteMovies>() {
                     @Override
-                    public void onResponse(Call<ResponseListMovies> call, Response<ResponseListMovies> response) {
+                    public void onResponse(Call<ResponseListFavoriteMovies> call, Response<ResponseListFavoriteMovies> response) {
                         if (mCurrentPage == 1) {
                             adapterFavsList.setItems(response.body().getResultsList());
                         } else {
@@ -115,7 +115,7 @@ public class FragmentFavsMovies extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseListMovies> call, Throwable t) {
+                    public void onFailure(Call<ResponseListFavoriteMovies> call, Throwable t) {
                         mIsLoading = false;
                     }
                 }

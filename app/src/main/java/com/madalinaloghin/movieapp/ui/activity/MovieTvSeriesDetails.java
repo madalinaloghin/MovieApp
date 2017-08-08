@@ -9,6 +9,8 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
+import com.madalinaloghin.movieapp.api.RequestManager;
+import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
@@ -16,6 +18,9 @@ import com.madalinaloghin.util.object.TvSeries;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieTvSeriesDetails extends AppCompatActivity {
 
@@ -64,22 +69,77 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
 
     @OnClick(R.id.iv_image_poster_movie_series)
     void clickImage() {
-        Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite), Toast.LENGTH_SHORT).show();
+        if (movie == null) {
+            Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this.getBaseContext(), String.valueOf(movie.isFavorite), Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     @OnClick(R.id.tb_favorite_movie_toggle)
     void onClickFavoriteButton() {
-        int id;
-        String tip;
         if (movie == null) {
-            id = tvSeries.getId();
-            tip = Categories.TV_SERIES;
+            updateTvSeriesStatusFavorite(tvSeries.getId(), Categories.TV_SERIES, tbFavoriteButton.isChecked());
+            updateFavoriteInfo(Categories.TV_SERIES);
         } else {
-            id = movie.getId();
-            tip = Categories.MOVIE;
+            updateMoviesStatusFavorite(movie.getId(), Categories.MOVIE, tbFavoriteButton.isChecked());
+            updateFavoriteInfo(Categories.MOVIE);
         }
+    }
 
-         //apelat direct cu idul si tipul de aici
+
+    void updateFavoriteInfo(String type) {
+        if (type == Categories.MOVIE) {
+            tbFavoriteButton.setChecked(movie.isFavorite);
+        } else {
+            tbFavoriteButton.setChecked(tvSeries.isFavorite);
+        }
+    }
+
+
+    void updateTvSeriesStatusFavorite(int id, final String mediaType, final boolean favorite) {
+        RequestManager.getInstance(getBaseContext()).markTvSeriesAsFavorite(
+                Util.currentUser.getId(),
+                mediaType,
+                id,
+                favorite,
+                new Callback<TvSeries>() {
+                    @Override
+                    public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
+                        tvSeries.isFavorite = favorite;
+                    }
+
+                    @Override
+                    public void onFailure(Call<TvSeries> call, Throwable t) {
+
+                    }
+                }
+        );
+
+    }
+
+
+    void updateMoviesStatusFavorite(int id, final String mediaType, final boolean favorite) {
+        RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
+                Util.currentUser.getId(),
+                mediaType,
+                id,
+                favorite,
+                new Callback<Movie>() {
+                    @Override
+                    public void onResponse(Call<Movie> call, Response<Movie> response) {
+                        movie.isFavorite = favorite;
+                        Toast.makeText(getBaseContext(), response.message().toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Movie> call, Throwable t) {
+
+                    }
+                }
+        );
+
     }
 
     void updateMovieInfo() {
@@ -89,6 +149,7 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
         tvMovieSeriesTitle.setText(movie.getTitle());
         tvReleaseDate.setText(movie.getReleaseDate());
         tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
+        tbFavoriteButton.setChecked(movie.isFavorite);
     }
 
     void updateTvSeriesInfo() {
@@ -99,10 +160,6 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
         tvReleaseDate.setText(tvSeries.getFirst_air_date());
         tvVoteAverage.setText(String.valueOf(tvSeries.getVoteAverage()));
 
-        if (tvSeries.isFavorite) {
-            tbFavoriteButton.setChecked(true);
-        } else {
-            tbFavoriteButton.setChecked(false);
-        }
+        tbFavoriteButton.setChecked(tvSeries.isFavorite);
     }
 }

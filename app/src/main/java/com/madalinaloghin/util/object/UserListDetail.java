@@ -2,14 +2,11 @@ package com.madalinaloghin.util.object;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 /**
- * Created by madalina.loghin on 8/1/2017.
+ * Created by madalina.loghin on 8/7/2017.
  */
 
-public class Movie implements Serializable {
+public class UserListDetail {
 
     @SerializedName("id")
     private int id;
@@ -32,28 +29,12 @@ public class Movie implements Serializable {
     @SerializedName("vote_average")
     private float voteAverage;
 
-    @SerializedName("vote_count")
-    private int voteCount;
+    @SerializedName("media_type")
+    private String mediaType;
 
-
-    @SerializedName("keywords")
-    private KeywordHolder keywords;
-
-    @SerializedName("budget")
-    private float budget;
-
-    @SerializedName("genres")
-    private ArrayList<Genre> genres;
-
-    @SerializedName("popularity")
-    private float popularity;
-
-
-    @SerializedName("status")
-    private String status;
-
-    public boolean isFavorite;
-
+    public String getMediaType() {
+        return mediaType;
+    }
 
     public int getId() {
         return id;
@@ -76,33 +57,12 @@ public class Movie implements Serializable {
         return url;
     }
 
-    public KeywordHolder getKeywords() {
-        return keywords;
-    }
-
-    public float getVoteAverage() {
-        return voteAverage;
-    }
-
-    public int getVoteCount() {
-        return voteCount;
-    }
-
     public String getImageUrl() {
         String url = "https://image.tmdb.org/t/p/w500" + imageUrl;
         return url;
     }
 
-
-    public float getBudget() {
-        return budget;
-    }
-
-    public ArrayList<Genre> getGenres() {
-        return genres;
-    }
-
-    public float getPopularity() {
-        return popularity;
+    public float getVoteAverage() {
+        return voteAverage;
     }
 }
