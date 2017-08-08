@@ -11,10 +11,12 @@ import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListPeople;
 import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
+import com.madalinaloghin.movieapp.api.response.ResponseMultiSearch;
 import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.Movie;
+import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
@@ -142,5 +144,67 @@ public class RequestManager {
             call.enqueue(callback);
         }
     }
+
+    public void queryMultiSearch(@NonNull final String query, @NonNull final int page, @Nullable final Callback<ResponseMultiSearch> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseMultiSearch> call = service.queryMultiSearch(Util.getApiKey, query, page);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryMovieDetails(@NonNull final int movieId, @Nullable final Callback<Movie> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Movie> call = service.queryMovieDetails(movieId, Util.getApiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryTvSeriesDetail(@NonNull final int tvSeriesId, @Nullable Callback<TvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<TvSeries> call = service.queryTvSeriesDetails(tvSeriesId, Util.getApiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void queryPersonDetail(@NonNull final int personId, @Nullable Callback<Person> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Person> call = service.queryPersonDetails(personId, Util.getApiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchMovies(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListMovies> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListMovies> call = service.querySearchMovies(Util.getApiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchTvSeries(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListTvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListTvSeries> call = service.querySearchTvSeries(Util.getApiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchPerson(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListPeople> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListPeople> call = service.querySearchPeople(Util.getApiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
 }
 

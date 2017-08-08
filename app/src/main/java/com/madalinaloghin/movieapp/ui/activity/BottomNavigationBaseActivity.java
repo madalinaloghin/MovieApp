@@ -24,7 +24,6 @@ public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
     FrameLayout frameParent;
 
 
-
     protected void onCreate(Bundle savedInstanceState, final int layout) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation_base);
@@ -77,7 +76,6 @@ public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public void onBackPressed() {

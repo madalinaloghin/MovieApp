@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Movie Database</string>
 
+    <string name="hint_search">Search for movies,tv series or actors</string>
     <string name="api_key">d9695f4d017fcc9799ede07d46dd40c7</string>
     <string name="token_session">cf1bacd1887cb574dfcefa421ea256d93cd549b5</string>
 

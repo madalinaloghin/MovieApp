@@ -149,7 +149,10 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
         tvMovieSeriesTitle.setText(movie.getTitle());
         tvReleaseDate.setText(movie.getReleaseDate());
         tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
+
         tbFavoriteButton.setChecked(movie.isFavorite);
+
+
     }
 
     void updateTvSeriesInfo() {
@@ -161,5 +164,12 @@ public class MovieTvSeriesDetails extends AppCompatActivity {
         tvVoteAverage.setText(String.valueOf(tvSeries.getVoteAverage()));
 
         tbFavoriteButton.setChecked(tvSeries.isFavorite);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 }

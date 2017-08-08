@@ -19,6 +19,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".ui.activity.ListsActivity"
@@ -33,7 +36,11 @@
             android:label="@string/title_activity_account"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activity.MovieTvSeriesDetails" />
-        <activity android:name=".ui.activity.MovieListDetailsActivity"></activity>
+        <activity android:name=".ui.activity.SearchResultsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

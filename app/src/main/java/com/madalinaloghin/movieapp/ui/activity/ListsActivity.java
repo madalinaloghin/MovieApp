@@ -1,6 +1,7 @@
 package com.madalinaloghin.movieapp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,9 @@ import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterUserList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterUserListDetails;
+import com.madalinaloghin.util.object.Categories;
+import com.madalinaloghin.util.object.Movie;
+import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.UserList;
 import com.madalinaloghin.util.object.UserListDetail;
 
@@ -28,6 +32,9 @@ public class ListsActivity extends BottomNavigationBaseActivity {
     private int mCurrentPage = 0;
 
     int listId;
+
+    public Movie movie;
+    public TvSeries tvSeries;
 
     RecyclerView rvListDetails;
     private UserListDetail detail;
@@ -49,12 +56,13 @@ public class ListsActivity extends BottomNavigationBaseActivity {
 
 
     void setupRecycleView() {
-        mLayoutManager = new LinearLayoutManager(this.getBaseContext(), LinearLayoutManager.HORIZONTAL, false );
+        mLayoutManager = new LinearLayoutManager(this.getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
         rvLists.setLayoutManager(mLayoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvLists.getContext(),
                 mLayoutManager.getOrientation());
         rvLists.addItemDecoration(dividerItemDecoration);
+
 
         adapterLists = new AdapterUserList(new AdapterUserList.OnItemClickedListener() {
             @Override
@@ -62,11 +70,6 @@ public class ListsActivity extends BottomNavigationBaseActivity {
                 listId = userList.getId();
                 setupRecycleViewDetails();
                 getListComponentsDetails();
-                /*Intent intent = new Intent(getBaseContext(), MovieListDetailsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", userList.getId());
-                intent.putExtras(bundle);
-                startActivity(intent);*/
             }
         });
 
@@ -82,7 +85,7 @@ public class ListsActivity extends BottomNavigationBaseActivity {
                 int visibleTotalCount = mLayoutManager.getItemCount();
                 int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
-                if (visibleItemCount  < visibleTotalCount ) {
+                if (visibleItemCount < visibleTotalCount) {
                     getUserList();
                 }
             }
@@ -104,6 +107,7 @@ public class ListsActivity extends BottomNavigationBaseActivity {
                         }
                         mIsLoading = false;
                     }
+
                     @Override
                     public void onFailure(Call<ResponseUserLists> call, Throwable t) {
                         mIsLoading = false;
@@ -125,14 +129,81 @@ public class ListsActivity extends BottomNavigationBaseActivity {
         mAdapter = new AdapterUserListDetails(new AdapterUserListDetails.OnItemClickedListener() {
             @Override
             public void onItemClicked(UserListDetail userListDetail) {
+                Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetails.class);
+                Bundle bundle = new Bundle();
+                if (userListDetail.getMediaType().equals(Categories.MOVIE)) {
+                    
+                    //de transf din user list in movie....
 
+                    bundle.putSerializable(Categories.MOVIE, userListDetail);
 
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    bundle.putSerializable(Categories.TV_SERIES, userListDetail);
+
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+
+               /*Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetails.class);
+                if (userListDetail.getMediaType().equals(Categories.MOVIE)) {
+                    movie = new Movie();
+                    getMovieObject(userListDetail.getId());
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Categories.MOVIE, movie);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    tvSeries = new TvSeries();
+
+                    Bundle bundle = new Bundle();
+                    getTvSeriesObject(userListDetail.getId());
+                    bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }*/
             }
         });
-
         rvListDetails.setAdapter(mAdapter);
-
     }
+
+
+    void getMovieObject(final int movieId) {
+        RequestManager.getInstance(this.getBaseContext()).queryMovieDetails(
+                movieId,
+                new Callback<Movie>() {
+                    @Override
+                    public void onResponse(Call<Movie> call, Response<Movie> response) {
+                        movie = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Movie> call, Throwable t) {
+
+                    }
+                }
+        );
+    }
+
+    void getTvSeriesObject(final int tvSeriesId) {
+        RequestManager.getInstance(this.getBaseContext()).queryTvSeriesDetail(
+                tvSeriesId,
+                new Callback<TvSeries>() {
+                    @Override
+                    public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
+                        tvSeries = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<TvSeries> call, Throwable t) {
+
+                    }
+                }
+        );
+    }
+
 
     void getListComponentsDetails() {
         RequestManager.getInstance(this.getBaseContext()).queryUserListsDetails(
@@ -142,6 +213,7 @@ public class ListsActivity extends BottomNavigationBaseActivity {
                     public void onResponse(Call<ResponseUserListDetails> call, Response<ResponseUserListDetails> response) {
                         mAdapter.setItems(response.body().getResultsList());
                     }
+
                     @Override
                     public void onFailure(Call<ResponseUserListDetails> call, Throwable t) {
                     }

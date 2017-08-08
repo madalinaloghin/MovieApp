@@ -5,9 +5,11 @@ import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListPeople;
 import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
+import com.madalinaloghin.movieapp.api.response.ResponseMultiSearch;
 import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
 import com.madalinaloghin.util.object.Movie;
+import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
@@ -91,4 +93,39 @@ public interface MoviesService {
                                                    @Query("api_key") String apiKey);
 
 
+    @GET("search/multi")
+    Call<ResponseMultiSearch> queryMultiSearch(@Query("api_key") String apiKey,
+                                               @Query("query") String query,
+                                               @Query("page") int page);
+
+
+    @GET("movie/{movie_id}")
+    Call<Movie> queryMovieDetails(@Path("movie_id") int movieId,
+                                  @Query("api_key") String apiKey);
+
+
+    @GET("tv/{tv_id}")
+    Call<TvSeries> queryTvSeriesDetails(@Path("tv_id") int tvId,
+                                        @Query("api_key") String apiKey);
+
+
+    @GET("person/{person_id}")
+    Call<Person> queryPersonDetails(@Path("person_id") int personId,
+                                    @Query("api_key") String apiKey);
+
+
+    @GET("search/movie")
+    Call<ResponseListMovies> querySearchMovies(@Query("api_key") String apiKey,
+                                               @Query("page") int page,
+                                               @Query("query") String query);
+
+    @GET("search/tv")
+    Call<ResponseListTvSeries> querySearchTvSeries(@Query("api_key") String apiKey,
+                                                   @Query("page") int page,
+                                                   @Query("query") String query);
+
+    @GET("search/person")
+    Call<ResponseListPeople> querySearchPeople(@Query("api_key") String apiKey,
+                                               @Query("page") int page,
+                                               @Query("query") String query);
 }

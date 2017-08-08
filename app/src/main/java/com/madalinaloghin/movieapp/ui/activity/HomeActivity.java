@@ -1,10 +1,15 @@
 package com.madalinaloghin.movieapp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
@@ -53,12 +58,12 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState,R.layout.activity_home);
+        super.onCreate(savedInstanceState, R.layout.activity_home);
 
         loadInfos();
     }
 
-    public void loadInfos(){
+    public void loadInfos() {
         rvActorsPopular = (RecyclerView) findViewById(R.id.rv_actors_popular);
         rvMoviesPopular = (RecyclerView) findViewById(R.id.rv_movie_popular);
         rvTvSeriesPopular = (RecyclerView) findViewById(R.id.rv_tv_series_popular);
@@ -73,7 +78,41 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
         getCurrentUser();
 
+
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search_option, menu);
+
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                handleIntent(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return true;
+    }
+
+    private void handleIntent(String query){
+        Intent i = new Intent(getBaseContext(), SearchResultsActivity.class);
+        i.putExtra("query", query);
+        startActivity(i);
+    }
+
 
 
     private void setupRecycleViewMovies() {
@@ -83,7 +122,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             @Override
             public void onItemClick(Movie movie) {
                 Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
-                Bundle bundle  = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -116,7 +155,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             @Override
             public void onItemClick(TvSeries tvSeries) {
                 Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
-                Bundle bundle  = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -190,7 +229,6 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                         mIsLoadingMovies = false;
                     }
                 }
-
         );
     }
 
@@ -244,7 +282,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     }
 
 
-    private void getCurrentUser(){
+    private void getCurrentUser() {
         RequestManager.getInstance(this).queryUserAccount(
                 Util.getSessionId,
                 new Callback<User>() {
@@ -260,7 +298,6 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                 }
         );
     }
-
 
 
     @Override
