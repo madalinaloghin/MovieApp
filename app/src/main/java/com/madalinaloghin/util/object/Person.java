@@ -2,13 +2,14 @@ package com.madalinaloghin.util.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by madalina.loghin on 8/1/2017.
  */
 
-public class Person {
+public class Person implements Serializable {
     @SerializedName("birthday")
     private String birthday;
 
@@ -36,6 +37,14 @@ public class Person {
     @SerializedName("profile_path")
     private String imagePath;
 
+    @SerializedName("place_of_birth")
+    private String placeOfBirth;
+
+
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
 
     public String getBirthday() {
         return birthday;
@@ -68,5 +77,9 @@ public class Person {
     public String getImagePath() {
         String url = "https://image.tmdb.org/t/p/w500" + imagePath;
         return url;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -32,6 +32,11 @@
     <string name="movies">Movies</string>
     <string name="tvseries">TvSeries</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="birth_date">Birth date: </string>
+    <string name="death_day">Death day: </string>
+    <string name="place_of_birth">Place of birth: </string>
+    <string name="also_known_for">Also known for:</string>
+    <string name="biography">Biography</string>
+
+
 </resources>

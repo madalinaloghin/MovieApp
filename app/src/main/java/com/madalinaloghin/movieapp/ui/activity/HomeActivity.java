@@ -107,12 +107,12 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         return true;
     }
 
-    private void handleIntent(String query){
+
+    private void handleIntent(String query) {
         Intent i = new Intent(getBaseContext(), SearchResultsActivity.class);
         i.putExtra("query", query);
         startActivity(i);
     }
-
 
 
     private void setupRecycleViewMovies() {
@@ -121,7 +121,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         adapterMovieList = new AdapterPopularMovieList(new AdapterPopularMovieList.OnItemClickedListener() {
             @Override
             public void onItemClick(Movie movie) {
-                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
+                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.MOVIE, movie);
                 intent.putExtras(bundle);
@@ -154,7 +154,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         adapterTvSeriesList = new AdapterPopularTvSeriesList(new AdapterPopularTvSeriesList.OnItemClickedListener() {
             @Override
             public void onItemClick(TvSeries tvSeries) {
-                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetails.class);
+                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
@@ -186,7 +186,11 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         adapterPeopleList = new AdapterPopularPeopleList(new AdapterPopularPeopleList.OnItemClickedListener() {
             @Override
             public void onItemClick(Person person) {
-
+                Intent intent = new Intent(HomeActivity.this, PersonDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Categories.PERSON, person);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         rvActorsPopular.setAdapter(adapterPeopleList);
@@ -212,6 +216,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPageMovies++;
         mIsLoadingMovies = true;
         RequestManager.getInstance(this).queryPopularMovies(
+                Util.getApiKey,
                 mCurrentPageMovies,
                 new Callback<ResponseListMovies>() {
                     @Override
@@ -236,6 +241,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPageTvSeries++;
         mIsLoadingTvSeries = true;
         RequestManager.getInstance(this).queryPopularTvSeries(
+                Util.getApiKey,
                 mCurrentPageTvSeries,
                 new Callback<ResponseListTvSeries>() {
                     @Override
@@ -261,6 +267,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPagePersons++;
         mIsLoadingPerson = true;
         RequestManager.getInstance(this).queryPopularPeople(
+                Util.getApiKey,
                 mCurrentPagePersons,
                 new Callback<ResponseListPeople>() {
                     @Override
@@ -284,6 +291,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
     private void getCurrentUser() {
         RequestManager.getInstance(this).queryUserAccount(
+                Util.getApiKey,
                 Util.getSessionId,
                 new Callback<User>() {
                     @Override

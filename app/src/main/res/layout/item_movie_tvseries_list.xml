@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_vote_aver_list"
             android:background="@color/colorPrimary"
+            android:ellipsize="end"
             android:maxLines="4"
             android:minLines="4"
             android:padding="3dp"

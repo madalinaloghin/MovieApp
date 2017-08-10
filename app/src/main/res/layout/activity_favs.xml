@@ -14,12 +14,12 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tb_favorites_tabs"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@color/colorAccent"
             android:gravity="bottom"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorHighlight"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/colorHighlight"
             app:tabTextColor="@color/colorPrimary" />
 

@@ -62,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_popular_actors_home"
-            android:minHeight="@dimen/rv_min_height"
-            android:layout_marginBottom="@dimen/textview_margin_top_bottom"/>
+            android:layout_marginBottom="@dimen/textview_margin_top_bottom"
+            android:minHeight="@dimen/rv_min_height" />
 
     </RelativeLayout>
 

@@ -56,150 +56,177 @@ public class RequestManager {
     }
 
 
-    public void querySessionId(@NonNull final String requestToken, @Nullable final Callback<String> callback) {
+    public void querySessionId(@NonNull final String apiKey, @NonNull final String requestToken, @Nullable final Callback<String> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<String> call = service.querySessionID(Util.getApiKey, requestToken);
+        Call<String> call = service.querySessionID(apiKey, requestToken);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryUserAccount(@NonNull final String sessionId, @Nullable final Callback<User> callback) {
+    public void queryUserAccount(@NonNull final String apiKey, @NonNull final String sessionId, @Nullable final Callback<User> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<User> call = service.queryUserAccount(Util.getApiKey, sessionId);
+        Call<User> call = service.queryUserAccount(apiKey, sessionId);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularMovies(final int page, @Nullable final Callback<ResponseListMovies> callback) {
+    public void queryPopularMovies(@NonNull final String apiKey, @NonNull final int page, @Nullable final Callback<ResponseListMovies> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListMovies> call = service.queryPopularMovies(Util.getApiKey, page);
+        Call<ResponseListMovies> call = service.queryPopularMovies(apiKey, page);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularPeople(final int page, @Nullable final Callback<ResponseListPeople> callback) {
+    public void queryPopularPeople(@NonNull final String apiKey, @NonNull final int page, @Nullable final Callback<ResponseListPeople> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListPeople> call = service.queryPopularPersons(Util.getApiKey, page);
+        Call<ResponseListPeople> call = service.queryPopularPersons(apiKey, page);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
-    public void queryPopularTvSeries(final int page, @Nullable final Callback<ResponseListTvSeries> callback) {
+    public void queryPopularTvSeries(@NonNull final String apiKey, @NonNull final int page, @Nullable final Callback<ResponseListTvSeries> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListTvSeries> call = service.queryPopularTvSeries(Util.getApiKey, page);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-
-    public void queryFavoriteMovies(@NonNull final int accountId, final int page, @Nullable final Callback<ResponseListFavoriteMovies> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListFavoriteMovies> call = service.queryFavoriteMovies(accountId, Util.getApiKey, Util.getSessionId, page);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryFavoriteTvSeries(@NonNull final int accountId, final int page, @Nullable final Callback<ResponseListFavoriteTvSeries> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListFavoriteTvSeries> call = service.queryFavoriteTvSeries(accountId, Util.getApiKey, Util.getSessionId, page);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void markTvSeriesAsFavorite(@NonNull final int accountId, @NonNull final String mediaType, @NonNull final int mediaId, @NonNull final boolean favorite, @Nullable final Callback<TvSeries> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<TvSeries> call = service.updateTvSeriesMarkAsFavorite(accountId, Util.getApiKey, Util.getSessionId, mediaType, mediaId, favorite);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void markMovieAsFavorite(@NonNull final int accountId, @NonNull final String mediaType, @NonNull final int mediaId, @NonNull final boolean favorite, @Nullable final Callback<Movie> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<Movie> call = service.updateMovieMarkAsFavorite(accountId, Util.getApiKey, Util.getSessionId, mediaType, mediaId, favorite);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryUserList(int mCurrentPage, @Nullable final Callback<ResponseUserLists> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseUserLists> call = service.queryUserLists(Util.currentUser.getId(), Util.getApiKey, Util.getSessionId, mCurrentPage);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryUserListsDetails(@NonNull final int listId, @Nullable final Callback<ResponseUserListDetails> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseUserListDetails> call = service.queryListDetails(listId, Util.getApiKey);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryMultiSearch(@NonNull final String query, @NonNull final int page, @Nullable final Callback<ResponseMultiSearch> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseMultiSearch> call = service.queryMultiSearch(Util.getApiKey, query, page);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryMovieDetails(@NonNull final int movieId, @Nullable final Callback<Movie> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<Movie> call = service.queryMovieDetails(movieId, Util.getApiKey);
-        if (call != null) {
-            call.enqueue(callback);
-        }
-    }
-
-    public void queryTvSeriesDetail(@NonNull final int tvSeriesId, @Nullable Callback<TvSeries> callback) {
-        MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<TvSeries> call = service.queryTvSeriesDetails(tvSeriesId, Util.getApiKey);
+        Call<ResponseListTvSeries> call = service.queryPopularTvSeries(apiKey, page);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
 
-    public void queryPersonDetail(@NonNull final int personId, @Nullable Callback<Person> callback) {
+    public void queryFavoriteMovies(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int accountId, final int page, @Nullable final Callback<ResponseListFavoriteMovies> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<Person> call = service.queryPersonDetails(personId, Util.getApiKey);
+        Call<ResponseListFavoriteMovies> call = service.queryFavoriteMovies(accountId, apiKey, sessionId, page);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryFavoriteTvSeries(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int accountId, final int page, @Nullable final Callback<ResponseListFavoriteTvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListFavoriteTvSeries> call = service.queryFavoriteTvSeries(accountId, apiKey, sessionId, page);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
 
-    public void querySearchMovies(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListMovies> callback) {
+    public void markTvSeriesAsFavorite(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int accountId, @NonNull final String mediaType, @NonNull final int mediaId, @NonNull final boolean favorite, @Nullable final Callback<TvSeries> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListMovies> call = service.querySearchMovies(Util.getApiKey, page, query);
+        Call<TvSeries> call = service.updateTvSeriesMarkAsFavorite(accountId, apiKey, sessionId, mediaType, mediaId, favorite);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void markMovieAsFavorite(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int accountId, @NonNull final String mediaType, @NonNull final int mediaId, @NonNull final boolean favorite, @Nullable final Callback<Movie> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Movie> call = service.updateMovieMarkAsFavorite(accountId, apiKey, sessionId, mediaType, mediaId, favorite);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
 
-    public void querySearchTvSeries(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListTvSeries> callback) {
+    public void queryUserList(@NonNull final int userId, @NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int mCurrentPage, @Nullable final Callback<ResponseUserLists> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListTvSeries> call = service.querySearchTvSeries(Util.getApiKey, page, query);
+        Call<ResponseUserLists> call = service.queryUserLists(userId, apiKey, sessionId, mCurrentPage);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryUserListsDetails(@NonNull final String apiKey, @NonNull final int listId, @Nullable final Callback<ResponseUserListDetails> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseUserListDetails> call = service.queryListDetails(listId, apiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryMultiSearch(@NonNull final String apiKey, @NonNull final String query, @NonNull final int page, @Nullable final Callback<ResponseMultiSearch> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseMultiSearch> call = service.queryMultiSearch(apiKey, query, page);
         if (call != null) {
             call.enqueue(callback);
         }
     }
 
 
-    public void querySearchPerson(@NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListPeople> callback) {
+    public void queryMovieDetails(@NonNull final String apiKey, @NonNull final int movieId, @Nullable final Callback<Movie> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<ResponseListPeople> call = service.querySearchPeople(Util.getApiKey, page, query);
+        Call<Movie> call = service.queryMovieDetails(movieId, apiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryTvSeriesDetail(@NonNull final String apiKey, @NonNull final int tvSeriesId, @Nullable Callback<TvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<TvSeries> call = service.queryTvSeriesDetails(tvSeriesId, apiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void queryPersonDetail(@NonNull final String apiKey, @NonNull final int personId, @Nullable Callback<Person> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Person> call = service.queryPersonDetails(personId, apiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchMovies(@NonNull final String apiKey, @NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListMovies> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListMovies> call = service.querySearchMovies(apiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchTvSeries(@NonNull final String apiKey, @NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListTvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListTvSeries> call = service.querySearchTvSeries(apiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+
+    public void querySearchPerson(@NonNull final String apiKey, @NonNull final String query, @NonNull final int page, @Nullable Callback<ResponseListPeople> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListPeople> call = service.querySearchPeople(apiKey, page, query);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void rateMovie(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final float value, @NonNull final int movieId, @Nullable Callback<Movie> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Movie> call = service.updateRateMovie(movieId, apiKey, sessionId, value);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void rateTvSeries(@NonNull final String apiKey, @NonNull final String sessionId, @NonNull final float value, @NonNull final int tvId, @Nullable Callback<TvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<TvSeries> call = service.updateRateTvSeries(tvId, apiKey, sessionId, value);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryRatedMovieList(@NonNull final int userId, @NonNull final String apiKey, @NonNull final String sessionId, @NonNull final int page, @Nullable Callback<ResponseListMovies> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListMovies> call = service.queryRatedMovieList(userId, apiKey, sessionId, page);
         if (call != null) {
             call.enqueue(callback);
         }

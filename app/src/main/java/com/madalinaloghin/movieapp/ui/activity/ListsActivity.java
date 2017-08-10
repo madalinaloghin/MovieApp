@@ -13,6 +13,7 @@ import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterUserList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterUserListDetails;
+import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
@@ -96,6 +97,9 @@ public class ListsActivity extends BottomNavigationBaseActivity {
         mCurrentPage++;
         mIsLoading = true;
         RequestManager.getInstance(this.getBaseContext()).queryUserList(
+                Util.currentUser.getId(),
+                Util.getApiKey,
+                Util.getSessionId,
                 mCurrentPage,
                 new Callback<ResponseUserLists>() {
                     @Override
@@ -129,54 +133,39 @@ public class ListsActivity extends BottomNavigationBaseActivity {
         mAdapter = new AdapterUserListDetails(new AdapterUserListDetails.OnItemClickedListener() {
             @Override
             public void onItemClicked(UserListDetail userListDetail) {
-                Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetails.class);
+                Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
+
                 if (userListDetail.getMediaType().equals(Categories.MOVIE)) {
-                    
-                    //de transf din user list in movie....
 
-                    bundle.putSerializable(Categories.MOVIE, userListDetail);
-
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } else {
-                    bundle.putSerializable(Categories.TV_SERIES, userListDetail);
-
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-
-               /*Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetails.class);
-                if (userListDetail.getMediaType().equals(Categories.MOVIE)) {
                     movie = new Movie();
                     getMovieObject(userListDetail.getId());
 
-                    Bundle bundle = new Bundle();
                     bundle.putSerializable(Categories.MOVIE, movie);
+
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
                     tvSeries = new TvSeries();
-
-                    Bundle bundle = new Bundle();
                     getTvSeriesObject(userListDetail.getId());
                     bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }*/
+                }
+
             }
         });
         rvListDetails.setAdapter(mAdapter);
     }
 
-
     void getMovieObject(final int movieId) {
         RequestManager.getInstance(this.getBaseContext()).queryMovieDetails(
+                Util.getApiKey,
                 movieId,
                 new Callback<Movie>() {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
-                        movie = response.body();
+                        movie.equals(response.body());
                     }
 
                     @Override
@@ -189,6 +178,7 @@ public class ListsActivity extends BottomNavigationBaseActivity {
 
     void getTvSeriesObject(final int tvSeriesId) {
         RequestManager.getInstance(this.getBaseContext()).queryTvSeriesDetail(
+                Util.getApiKey,
                 tvSeriesId,
                 new Callback<TvSeries>() {
                     @Override
@@ -207,6 +197,7 @@ public class ListsActivity extends BottomNavigationBaseActivity {
 
     void getListComponentsDetails() {
         RequestManager.getInstance(this.getBaseContext()).queryUserListsDetails(
+                Util.getApiKey,
                 listId,
                 new Callback<ResponseUserListDetails>() {
                     @Override

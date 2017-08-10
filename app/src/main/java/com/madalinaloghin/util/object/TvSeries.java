@@ -61,7 +61,18 @@ public class TvSeries implements Serializable {
     private int voteCount;
 
 
+    private float userRatingValue;
+
     public boolean isFavorite;
+
+
+    public float getUserRatingValue() {
+        return userRatingValue;
+    }
+
+    public void setUserRatingValue(float userRatingValue) {
+        this.userRatingValue = userRatingValue;
+    }
 
 
     public String getImageUrl() {
