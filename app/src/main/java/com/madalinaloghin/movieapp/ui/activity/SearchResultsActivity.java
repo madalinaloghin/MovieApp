@@ -19,13 +19,16 @@ public class SearchResultsActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
     private SectionPagerAdapter mSectionPagerAdapter;
+    public static String query;
+
+    public static final String QUERY = "query";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        String query = getIntent().getStringExtra("query");
+        query = getIntent().getStringExtra(QUERY);
 
         viewPagerFavorites = (ViewPager) findViewById(R.id.vp_search_fragments);
         tabLayout = (TabLayout) findViewById(R.id.tl_search_tabs);
@@ -55,13 +58,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FragmentSearchMovies.newInstance();
+                    return FragmentSearchMovies.newInstance(query);
                 case 1:
-                    return FragmentSearchTvSeries.newInstance();
+                    return FragmentSearchTvSeries.newInstance(query);
                 case 2:
-                    return FragmentSearchPerson.newInstance();
+                    return FragmentSearchPerson.newInstance(query);
                 default:
-                    return FragmentSearchMovies.newInstance();
+                    return FragmentSearchMovies.newInstance(query);
             }
         }
 

@@ -18,7 +18,6 @@ import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteMovies;
 import com.madalinaloghin.movieapp.ui.activity.MovieDetailsActivity;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterFavsMovies;
 import com.madalinaloghin.util.Util;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 
 import retrofit2.Call;
@@ -48,6 +47,7 @@ public class FragmentFavsMovies extends Fragment {
         return inflater.inflate(R.layout.fragment_favs_movies, container, false);
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -71,7 +71,7 @@ public class FragmentFavsMovies extends Fragment {
             public void onItemClicked(Movie movie) {
                 Intent intent = new Intent(getView().getContext(), MovieDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.MOVIE, movie);
+                bundle.putSerializable(Util.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -101,8 +101,8 @@ public class FragmentFavsMovies extends Fragment {
         mCurrentPage++;
         mIsLoading = true;
         RequestManager.getInstance(this.getContext()).queryFavoriteMovies(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mCurrentPage,
                 new Callback<ResponseListFavoriteMovies>() {

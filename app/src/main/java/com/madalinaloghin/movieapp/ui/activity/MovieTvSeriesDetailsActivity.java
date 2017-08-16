@@ -20,7 +20,6 @@ import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarMovieList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarTvSeriesList;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
 
@@ -70,7 +69,6 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     RecyclerView rvSimilarSection;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,20 +86,20 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         );
 
 
-        if (b.getSerializable(Categories.MOVIE) != null) {
+        if (b.getSerializable(Util.MOVIE) != null) {
             movie = new Movie();
-            movie = (Movie) b.getSerializable(Categories.MOVIE);
+            movie = (Movie) b.getSerializable(Util.MOVIE);
             getMovieAccountState(movie.getId());
             updateMovieInfo();
-            updateMoviesStatusFavorite(movie.getId(), Categories.MOVIE, movie.isFavorite());
+            updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, movie.isFavorite());
             setupRecycleViewMovies();
             getSimilarMovies(movie.getId());
 
         } else {
             tvSeries = new TvSeries();
-            tvSeries = (TvSeries) b.getSerializable(Categories.TV_SERIES);
+            tvSeries = (TvSeries) b.getSerializable(Util.TV_SERIES);
             updateTvSeriesInfo();
-            updateTvSeriesStatusFavorite(tvSeries.getId(), Categories.TV_SERIES, tvSeries.isFavorite());
+            updateTvSeriesStatusFavorite(tvSeries.getId(), Util.TV_SERIES, tvSeries.isFavorite());
             setupRecycleViewTvSeries();
             getSimilarTvSeries(tvSeries.getId());
         }
@@ -121,11 +119,11 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.tb_favorite_movie_toggle)
     void onClickFavoriteButton() {
         if (movie == null) {
-            updateTvSeriesStatusFavorite(tvSeries.getId(), Categories.TV_SERIES, tbFavoriteButton.isChecked());
-            updateFavoriteInfo(Categories.TV_SERIES);
+            updateTvSeriesStatusFavorite(tvSeries.getId(), Util.TV_SERIES, tbFavoriteButton.isChecked());
+            updateFavoriteInfo(Util.TV_SERIES);
         } else {
-            updateMoviesStatusFavorite(movie.getId(), Categories.MOVIE, tbFavoriteButton.isChecked());
-            updateFavoriteInfo(Categories.MOVIE);
+            updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, tbFavoriteButton.isChecked());
+            updateFavoriteInfo(Util.MOVIE);
         }
     }
 
@@ -133,8 +131,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     void updateRatingBarValue(float value) {
         if (tvSeries == null) {
             RequestManager.getInstance(getBaseContext()).rateMovie(
-                    Util.getApiKey,
-                    Util.getSessionId,
+                    Util.API_KEY,
+                    Util.SESSION_ID,
                     value,
                     movie.getId(),
                     new Callback<Movie>() {
@@ -150,8 +148,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
             );
         } else {
             RequestManager.getInstance(getBaseContext()).rateTvSeries(
-                    Util.getApiKey,
-                    Util.getSessionId,
+                    Util.API_KEY,
+                    Util.SESSION_ID,
                     value,
                     tvSeries.getId(),
                     new Callback<TvSeries>() {
@@ -169,7 +167,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     }
 
     void updateFavoriteInfo(String type) {
-        if (type == Categories.MOVIE) {
+        if (type == Util.MOVIE) {
             tbFavoriteButton.setChecked(movie.isFavorite());
         } else {
             tbFavoriteButton.setChecked(tvSeries.isFavorite());
@@ -179,8 +177,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
 
     void updateTvSeriesStatusFavorite(int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markTvSeriesAsFavorite(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mediaType,
                 id,
@@ -189,7 +187,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
                         tvSeries.setFavorite(favorite);
-                        updateFavoriteInfo(Categories.TV_SERIES);
+                        updateFavoriteInfo(Util.TV_SERIES);
                     }
 
                     @Override
@@ -209,7 +207,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
             public void onItemClick(TvSeries tvSeries) {
                 Intent intent = new Intent(MovieTvSeriesDetailsActivity.this, MovieTvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                bundle.putSerializable(Util.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -242,7 +240,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
             public void onItemClick(Movie movie) {
                 Intent intent = new Intent(MovieTvSeriesDetailsActivity.this, MovieTvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.MOVIE, movie);
+                bundle.putSerializable(Util.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -273,7 +271,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         mIsLoading = true;
         RequestManager.getInstance(getBaseContext()).querySimilarTvSeries(
                 id,
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPage,
                 new Callback<ResponseListTvSeries>() {
                     @Override
@@ -299,7 +297,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         mIsLoading = true;
         RequestManager.getInstance(getBaseContext()).querySimilarMovies(
                 id,
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPage,
                 new Callback<ResponseListMovies>() {
                     @Override
@@ -324,8 +322,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     void getMovieAccountState(int id) {
         RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
                 id,
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 new Callback<AccountState>() {
                     @Override
                     public void onResponse(Call<AccountState> call, Response<AccountState> response) {
@@ -345,8 +343,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
 
     void updateMoviesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mediaType,
                 id,
@@ -355,7 +353,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
                         movie.setFavorite(favorite);
-                        updateFavoriteInfo(Categories.MOVIE);
+                        updateFavoriteInfo(Util.MOVIE);
                     }
 
                     @Override

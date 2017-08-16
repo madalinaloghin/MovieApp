@@ -69,8 +69,7 @@ public interface MoviesService {
     @GET("account/{account_id}/lists")
     Call<ResponseUserLists> queryUserLists(@Path("account_id") int accountId,
                                            @Query("api_key") String apiKey,
-                                           @Query("session_id") String sessionId,
-                                           @Query("page") int page);
+                                           @Query("session_id") String sessionId);
 
     @GET("list/{list_id}")
     Call<ResponseUserListDetails> queryListDetails(@Path("list_id") int listId,

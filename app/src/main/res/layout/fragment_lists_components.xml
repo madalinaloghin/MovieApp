@@ -2,12 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.madalinaloghin.movieapp.ui.fragment.FragmentSearchPerson">
+    tools:context="com.madalinaloghin.movieapp.ui.fragment.FragmentListsComponents">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_search_person"
+        android:id="@+id/rv_list_components"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
+        android:layout_height="match_parent" />
 
 </FrameLayout>

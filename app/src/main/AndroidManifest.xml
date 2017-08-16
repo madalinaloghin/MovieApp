@@ -19,11 +19,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".ui.activity.ListsActivity"
             android:label="@string/title_activity_lists"
@@ -36,15 +36,28 @@
             android:name=".ui.activity.AccountActivity"
             android:label="@string/title_activity_account"
             android:theme="@style/AppTheme" />
+
         <activity android:name=".ui.activity.MovieTvSeriesDetailsActivity" />
-        <activity android:name=".ui.activity.SearchResultsActivity">
+
+        <activity
+            android:name=".ui.activity.SearchResultsActivity"
+            android:label="@string/title_activity_search_results">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.PersonDetailsActivity" />
-        <activity android:name=".ui.activity.MovieDetailsActivity" />
-        <activity android:name=".ui.activity.TvSeriesDetailsActivity"></activity>
+
+        <activity
+            android:name=".ui.activity.PersonDetailsActivity"
+            android:label="@string/title_activity_actor_details" />
+
+        <activity
+            android:name=".ui.activity.MovieDetailsActivity"
+            android:label="@string/title_activity_movie_details" />
+
+        <activity
+            android:name=".ui.activity.TvSeriesDetailsActivity"
+            android:label="@string/title_activity_tv_details"></activity>
     </application>
 
 </manifest>

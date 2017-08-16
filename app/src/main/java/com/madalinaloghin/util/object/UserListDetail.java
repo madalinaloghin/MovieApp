@@ -16,6 +16,10 @@ public class UserListDetail implements Serializable {
     @SerializedName("title")
     private String title;
 
+
+    @SerializedName("name")
+    private String titleSeries;
+
     @SerializedName("overview")
     private String description;
 
@@ -44,6 +48,10 @@ public class UserListDetail implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getTitleSeries() {
+        return titleSeries;
     }
 
     public String getDescription() {

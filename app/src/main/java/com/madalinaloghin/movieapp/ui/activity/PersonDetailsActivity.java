@@ -14,7 +14,6 @@ import com.madalinaloghin.movieapp.api.RequestManager;
 import com.madalinaloghin.movieapp.api.response.ResponseImageList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPersonImages;
 import com.madalinaloghin.util.Util;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Images;
 import com.madalinaloghin.util.object.Person;
 
@@ -63,7 +62,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ButterKnife.bind(this);
 
-        person = (Person) b.getSerializable(Categories.PERSON);
+        person = (Person) b.getSerializable(Util.PERSON);
         getPersonDetails(person.getId());
 
         setupRecycleView();
@@ -74,7 +73,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
     void getPersonDetails(final int actorId) {
         RequestManager.getInstance(this.getBaseContext()).queryPersonDetail(
-                Util.getApiKey,
+                Util.API_KEY,
                 actorId,
                 new Callback<Person>() {
                     @Override
@@ -122,7 +121,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
     void getImages(int id) {
         RequestManager.getInstance(getBaseContext()).queryPersonImages(
                 id,
-                Util.getApiKey,
+                Util.API_KEY,
                 new Callback<ResponseImageList>() {
                     @Override
                     public void onResponse(Call<ResponseImageList> call, Response<ResponseImageList> response) {

@@ -14,21 +14,24 @@ import com.madalinaloghin.movieapp.R;
  */
 public class FragmentSearchPerson extends Fragment {
 
-    public static FragmentSearchPerson newInstance() {
+    public static final String QUERY = "query";
+
+    public static FragmentSearchPerson newInstance(String query) {
         FragmentSearchPerson fragment = new FragmentSearchPerson();
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY, query);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
 
     public FragmentSearchPerson() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_person, container, false);
     }
 

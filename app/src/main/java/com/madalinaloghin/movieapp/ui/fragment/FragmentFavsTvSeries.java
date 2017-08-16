@@ -18,7 +18,6 @@ import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.ui.activity.TvSeriesDetailsActivity;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterFavsTvSeries;
 import com.madalinaloghin.util.Util;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
@@ -74,7 +73,7 @@ public class FragmentFavsTvSeries extends Fragment {
             public void onItemClicked(TvSeries tvSeries) {
                 Intent intent = new Intent(getView().getContext(), TvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                bundle.putSerializable(Util.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -104,8 +103,8 @@ public class FragmentFavsTvSeries extends Fragment {
         mIsLoading = true;
 
         RequestManager.getInstance(this.getContext()).queryFavoriteTvSeries(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mCurrentPage,
                 new Callback<ResponseListFavoriteTvSeries>() {

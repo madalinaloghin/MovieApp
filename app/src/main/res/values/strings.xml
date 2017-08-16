@@ -14,13 +14,20 @@
     <string name="lists_activity">Lists</string>
     <string name="favs_activity">Favs</string>
     <string name="account_activity">Account</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Home</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_lists">ListsActivity</string>
-    <string name="title_activity_favs">FavsActivity</string>
-    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_lists">User lists</string>
+    <string name="title_activity_favs">Favorites</string>
+    <string name="title_activity_account">Account</string>
+
+    <string name="title_activity_movie_details">Movie details</string>
+    <string name="title_activity_tv_details">Tv serie details</string>
+    <string name="title_activity_actor_details">Actor details</string>
+
+    <string name="title_activity_search_results">Search results</string>
+
 
     <string name="section_popular_movies_home">Popular Movies</string>
     <string name="section_popular_tv_series_home">Popular TV Shows</string>
@@ -39,5 +46,8 @@
     <string name="biography">Biography</string>
     <string name="other_images">Images</string>
     <string name="similar_recomm">Similar </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -18,7 +18,6 @@ import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarMovieList;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Rated;
 
@@ -82,7 +81,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         );
 
         movie = new Movie();
-        movie = (Movie) b.getSerializable(Categories.MOVIE);
+        movie = (Movie) b.getSerializable(Util.MOVIE);
         getMovieAccountState(movie.getId());
         updateMovieInfo();
         setupRecycleViewMovies();
@@ -99,15 +98,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.tb_favorite_movie_details_toggle)
     void onClickFavoriteButton() {
-        updateMoviesStatusFavorite(movie.getId(), Categories.MOVIE, tbFavoriteButton.isChecked());
+        updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, tbFavoriteButton.isChecked());
         tbFavoriteButton.setChecked(movie.isFavorite());
 
     }
 
     void updateRatingBarValue(final float value) {
         RequestManager.getInstance(getBaseContext()).rateMovie(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 value * 2,
                 movie.getId(),
                 new Callback<Movie>() {
@@ -133,7 +132,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onItemClick(Movie movie) {
                 Intent intent = new Intent(MovieDetailsActivity.this, MovieDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.MOVIE, movie);
+                bundle.putSerializable(Util.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -165,7 +164,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mIsLoading = true;
         RequestManager.getInstance(getBaseContext()).querySimilarMovies(
                 id,
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPage,
                 new Callback<ResponseListMovies>() {
                     @Override
@@ -190,8 +189,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     void getMovieAccountState(int id) {
         RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
                 id,
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 new Callback<AccountState>() {
                     @Override
                     public void onResponse(Call<AccountState> call, Response<AccountState> response) {
@@ -212,8 +211,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     void updateMoviesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mediaType,
                 id,

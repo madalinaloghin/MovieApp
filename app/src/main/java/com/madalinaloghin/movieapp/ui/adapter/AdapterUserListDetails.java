@@ -32,7 +32,7 @@ public class AdapterUserListDetails extends RecyclerView.Adapter<AdapterUserList
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_tvseries_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favs_rv_movie_series, parent, false);
         return new ViewHolder(view, mListener);
     }
 
@@ -59,14 +59,11 @@ public class AdapterUserListDetails extends RecyclerView.Adapter<AdapterUserList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        @BindView(R.id.iv_image_movie_tv_lists)
+        @BindView(R.id.iv_image_fav_rv)
         ImageView ivImage;
 
-        @BindView(R.id.tv_vote_aver_list)
-        TextView tvAverageVote;
-
-        @BindView(R.id.tv_list_description)
-        TextView tvListDescription;
+        @BindView(R.id.tv_title_favs)
+        TextView tvTitle;
 
         private OnItemClickedListener listener;
 
@@ -77,9 +74,12 @@ public class AdapterUserListDetails extends RecyclerView.Adapter<AdapterUserList
         }
 
         public void bind(final UserListDetail userListDetail) {
-            Glide.with(itemView.getContext()).load(userListDetail.getPosterUrl()).into(ivImage);
-            tvAverageVote.setText(String.valueOf(userListDetail.getVoteAverage()));
-            tvListDescription.setText(userListDetail.getDescription());
+            Glide.with(itemView.getContext()).load(userListDetail.getImageUrl()).into(ivImage);
+            if (userListDetail.getTitle() != null) {
+                tvTitle.setText(String.valueOf(userListDetail.getTitle()));
+            } else {
+                tvTitle.setText(String.valueOf(userListDetail.getTitleSeries()));
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

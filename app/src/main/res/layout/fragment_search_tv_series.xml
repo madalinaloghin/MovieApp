@@ -4,4 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.madalinaloghin.movieapp.ui.fragment.FragmentSearchTvSeries">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_search_tv_series"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
 </FrameLayout>

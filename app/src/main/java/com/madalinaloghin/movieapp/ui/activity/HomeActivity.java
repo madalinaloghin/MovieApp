@@ -20,7 +20,6 @@ import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularMovieList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularPeopleList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPopularTvSeriesList;
 import com.madalinaloghin.util.Util;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
@@ -123,7 +122,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             public void onItemClick(Movie movie) {
                 Intent intent = new Intent(HomeActivity.this, MovieDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.MOVIE, movie);
+                bundle.putSerializable(Util.MOVIE, movie);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -156,7 +155,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             public void onItemClick(TvSeries tvSeries) {
                 Intent intent = new Intent(HomeActivity.this, TvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                bundle.putSerializable(Util.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -188,7 +187,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
             public void onItemClick(Person person) {
                 Intent intent = new Intent(HomeActivity.this, PersonDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.PERSON, person);
+                bundle.putSerializable(Util.PERSON, person);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -216,7 +215,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPageMovies++;
         mIsLoadingMovies = true;
         RequestManager.getInstance(this).queryPopularMovies(
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPageMovies,
                 new Callback<ResponseListMovies>() {
                     @Override
@@ -241,7 +240,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPageTvSeries++;
         mIsLoadingTvSeries = true;
         RequestManager.getInstance(this).queryPopularTvSeries(
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPageTvSeries,
                 new Callback<ResponseListTvSeries>() {
                     @Override
@@ -267,7 +266,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         mCurrentPagePersons++;
         mIsLoadingPerson = true;
         RequestManager.getInstance(this).queryPopularPeople(
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPagePersons,
                 new Callback<ResponseListPeople>() {
                     @Override
@@ -291,8 +290,8 @@ public class HomeActivity extends BottomNavigationBaseActivity {
 
     private void getCurrentUser() {
         RequestManager.getInstance(this).queryUserAccount(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {

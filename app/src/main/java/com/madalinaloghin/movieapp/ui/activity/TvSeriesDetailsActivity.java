@@ -18,7 +18,6 @@ import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarTvSeriesList;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
-import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.TvSeries;
 
 import butterknife.BindView;
@@ -82,7 +81,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
         );
 
         tvSeries = new TvSeries();
-        tvSeries = (TvSeries) b.getSerializable(Categories.TV_SERIES);
+        tvSeries = (TvSeries) b.getSerializable(Util.TV_SERIES);
         getTvSeriesAccountState(tvSeries.getId());
         updateTvSeriesInfo();
         setupRecycleViewTvSeries();
@@ -98,7 +97,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.tb_favorite_tv_series_details_toggle)
     void onClickFavoriteButton() {
-        updateTvSeriesStatusFavorite(tvSeries.getId(), Categories.TV_SERIES, tbFavoriteButton.isChecked());
+        updateTvSeriesStatusFavorite(tvSeries.getId(), Util.TV_SERIES, tbFavoriteButton.isChecked());
         tbFavoriteButton.setChecked(tvSeries.isFavorite());
     }
 
@@ -106,8 +105,8 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
     void getTvSeriesAccountState(int id) {
         RequestManager.getInstance(getBaseContext()).queryTvSeriesAccountState(
                 id,
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 new Callback<AccountState>() {
                     @Override
                     public void onResponse(Call<AccountState> call, Response<AccountState> response) {
@@ -128,8 +127,8 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
 
     void updateRatingBarValue(float value) {
         RequestManager.getInstance(getBaseContext()).rateTvSeries(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 value,
                 tvSeries.getId(),
                 new Callback<TvSeries>() {
@@ -147,8 +146,8 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
 
     void updateTvSeriesStatusFavorite(int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markTvSeriesAsFavorite(
-                Util.getApiKey,
-                Util.getSessionId,
+                Util.API_KEY,
+                Util.SESSION_ID,
                 Util.currentUser.getId(),
                 mediaType,
                 id,
@@ -177,7 +176,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
             public void onItemClick(TvSeries tvSeries) {
                 Intent intent = new Intent(TvSeriesDetailsActivity.this, TvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                bundle.putSerializable(Util.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -207,7 +206,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
         mIsLoading = true;
         RequestManager.getInstance(getBaseContext()).querySimilarTvSeries(
                 id,
-                Util.getApiKey,
+                Util.API_KEY,
                 mCurrentPage,
                 new Callback<ResponseListTvSeries>() {
                     @Override
