@@ -63,8 +63,26 @@ public class TvSeries implements Serializable {
 
     private float userRatingValue;
 
-    public boolean isFavorite;
+    private boolean isFavorite;
 
+    private Rated rated;
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+
+    public Rated getRated() {
+        return rated;
+    }
+
+    public void setRated(Rated rated) {
+        this.rated = rated;
+    }
 
     public float getUserRatingValue() {
         return userRatingValue;

@@ -2,6 +2,8 @@ package com.madalinaloghin.movieapp.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,8 +11,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
+import com.madalinaloghin.movieapp.api.response.ResponseImageList;
+import com.madalinaloghin.movieapp.ui.adapter.AdapterPersonImages;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.Categories;
+import com.madalinaloghin.util.object.Images;
 import com.madalinaloghin.util.object.Person;
 
 import butterknife.BindView;
@@ -22,6 +27,8 @@ import retrofit2.Response;
 public class PersonDetailsActivity extends AppCompatActivity {
 
     private Person person;
+    private LinearLayoutManager mLayoutManagerImages;
+    private AdapterPersonImages mAdapterImages;
 
     @BindView(R.id.tv_person_name)
     TextView tvPersonName;
@@ -45,19 +52,27 @@ public class PersonDetailsActivity extends AppCompatActivity {
     ImageView ivPersonImage;
 
 
+    @BindView(R.id.rv_images_persons)
+    RecyclerView mRvImages;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_details);
         Bundle b = getIntent().getExtras();
         ButterKnife.bind(this);
-        person = (Person) b.getSerializable(Categories.PERSON);
 
-        getActortDetails(person.getId());
+        person = (Person) b.getSerializable(Categories.PERSON);
+        getPersonDetails(person.getId());
+
+        setupRecycleView();
+        getImages(person.getId());
+
 
     }
 
-    void getActortDetails(final int actorId) {
+    void getPersonDetails(final int actorId) {
         RequestManager.getInstance(this.getBaseContext()).queryPersonDetail(
                 Util.getApiKey,
                 actorId,
@@ -75,6 +90,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
         );
     }
 
+
     void updatePersonInfo(Person p) {
         Glide.with(this).load(p.getImagePath()).into(ivPersonImage);
         tvPersonName.setText(p.getName());
@@ -90,4 +106,33 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
     }
 
+    void setupRecycleView() {
+        mLayoutManagerImages = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRvImages.setLayoutManager(mLayoutManagerImages);
+        mAdapterImages = new AdapterPersonImages(new AdapterPersonImages.OnItemClickedListener() {
+            @Override
+            public void onItemClick(Images image) {
+                Glide.with(getBaseContext()).load(image.getFilePath()).into(ivPersonImage);
+            }
+        });
+        mRvImages.setAdapter(mAdapterImages);
+
+    }
+
+    void getImages(int id) {
+        RequestManager.getInstance(getBaseContext()).queryPersonImages(
+                id,
+                Util.getApiKey,
+                new Callback<ResponseImageList>() {
+                    @Override
+                    public void onResponse(Call<ResponseImageList> call, Response<ResponseImageList> response) {
+                        mAdapterImages.setItems(response.body().getImageList());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseImageList> call, Throwable t) {
+                    }
+                }
+        );
+    }
 }

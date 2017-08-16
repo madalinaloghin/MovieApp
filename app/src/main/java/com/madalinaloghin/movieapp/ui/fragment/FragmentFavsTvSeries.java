@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
-import com.madalinaloghin.movieapp.ui.activity.MovieTvSeriesDetailsActivity;
+import com.madalinaloghin.movieapp.ui.activity.TvSeriesDetailsActivity;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterFavsTvSeries;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.Categories;
@@ -72,7 +72,7 @@ public class FragmentFavsTvSeries extends Fragment {
         adapterFavsList = new AdapterFavsTvSeries(new AdapterFavsTvSeries.OnItemClickedListener() {
             @Override
             public void onItemClicked(TvSeries tvSeries) {
-                Intent intent = new Intent(getView().getContext(), MovieTvSeriesDetailsActivity.class);
+                Intent intent = new Intent(getView().getContext(), TvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);

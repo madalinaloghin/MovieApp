@@ -121,7 +121,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         adapterMovieList = new AdapterPopularMovieList(new AdapterPopularMovieList.OnItemClickedListener() {
             @Override
             public void onItemClick(Movie movie) {
-                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetailsActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MovieDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.MOVIE, movie);
                 intent.putExtras(bundle);
@@ -154,7 +154,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         adapterTvSeriesList = new AdapterPopularTvSeriesList(new AdapterPopularTvSeriesList.OnItemClickedListener() {
             @Override
             public void onItemClick(TvSeries tvSeries) {
-                Intent intent = new Intent(HomeActivity.this, MovieTvSeriesDetailsActivity.class);
+                Intent intent = new Intent(HomeActivity.this, TvSeriesDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                 intent.putExtras(bundle);

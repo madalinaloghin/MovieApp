@@ -133,30 +133,37 @@ public class ListsActivity extends BottomNavigationBaseActivity {
         mAdapter = new AdapterUserListDetails(new AdapterUserListDetails.OnItemClickedListener() {
             @Override
             public void onItemClicked(UserListDetail userListDetail) {
-                Intent intent = new Intent(ListsActivity.this, MovieTvSeriesDetailsActivity.class);
-                Bundle bundle = new Bundle();
 
                 if (userListDetail.getMediaType().equals(Categories.MOVIE)) {
-
+                    Intent intent = new Intent(ListsActivity.this, MovieDetailsActivity.class);
+                    Bundle bundle = new Bundle();
                     movie = new Movie();
                     getMovieObject(userListDetail.getId());
-
-                    bundle.putSerializable(Categories.MOVIE, movie);
-
+                    bundle.putSerializable(Categories.MOVIE, movie2);
                     intent.putExtras(bundle);
                     startActivity(intent);
+
                 } else {
+                    Intent intent = new Intent(ListsActivity.this, TvSeriesDetailsActivity.class);
+                    Bundle bundle = new Bundle();
                     tvSeries = new TvSeries();
                     getTvSeriesObject(userListDetail.getId());
                     bundle.putSerializable(Categories.TV_SERIES, tvSeries);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
-
             }
+
         });
         rvListDetails.setAdapter(mAdapter);
     }
+
+    public Movie movie2;
+
+    public void setMovie2(Movie movie2) {
+        this.movie2 = movie2;
+    }
+
 
     void getMovieObject(final int movieId) {
         RequestManager.getInstance(this.getBaseContext()).queryMovieDetails(
@@ -165,7 +172,8 @@ public class ListsActivity extends BottomNavigationBaseActivity {
                 new Callback<Movie>() {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
-                        movie.equals(response.body());
+                        movie2 = new Movie();
+                        setMovie2(response.body());
                     }
 
                     @Override

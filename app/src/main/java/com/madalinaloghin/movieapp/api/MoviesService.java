@@ -1,5 +1,6 @@
 package com.madalinaloghin.movieapp.api;
 
+import com.madalinaloghin.movieapp.api.response.ResponseImageList;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
@@ -8,6 +9,7 @@ import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseMultiSearch;
 import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
+import com.madalinaloghin.util.object.AccountState;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
@@ -172,7 +174,33 @@ public interface MoviesService {
                                                       @Query("page") int page);
 
 
+    @GET("movie/{movie_id}/similar")
+    Call<ResponseListMovies> querySimilarMovies(@Path("movie_id") int movieId,
+                                                @Query("api_key") String apiKey,
+                                                @Query("page") int page);
 
+
+    @GET("tv/{tv_id}/similar")
+    Call<ResponseListTvSeries> querySimilarTvSeries(@Path("tv_id") int tvId,
+                                                    @Query("api_key") String apiKey,
+                                                    @Query("page") int page);
+
+
+    @GET("person/{person_id}/images")
+    Call<ResponseImageList> queryPersonImages(@Path("person_id") int personId,
+                                              @Query("api_key") String apikey);
+
+
+    @GET("movie/{movie_id}/account_states")
+    Call<AccountState> queryMovieAccountStates(@Path("movie_id") int movieId,
+                                               @Query("api_key") String apiKey,
+                                               @Query("session_id") String sessionId);
+
+
+    @GET("tv/{tv_id}/account_states")
+    Call<AccountState> queryTvSeriesAccountStates(@Path("tv_id") int tvId,
+                                               @Query("api_key") String apiKey,
+                                               @Query("session_id") String sessionId);
 
 }
 

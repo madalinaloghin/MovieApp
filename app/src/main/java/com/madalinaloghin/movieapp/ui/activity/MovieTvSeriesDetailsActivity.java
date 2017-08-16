@@ -1,7 +1,10 @@
 package com.madalinaloghin.movieapp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -11,7 +14,12 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
+import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
+import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
+import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarMovieList;
+import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarTvSeriesList;
 import com.madalinaloghin.util.Util;
+import com.madalinaloghin.util.object.AccountState;
 import com.madalinaloghin.util.object.Categories;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.TvSeries;
@@ -27,6 +35,12 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
 
     private Movie movie;
     private TvSeries tvSeries;
+    private LinearLayoutManager mLayoutManagerSimilar;
+    private AdapterSimilarTvSeriesList mAdapterTvSeries;
+    private AdapterSimilarMovieList mAdapterMovies;
+
+    private boolean mIsLoading = false;
+    private int mCurrentPage = 0;
 
     @BindView(R.id.iv_image_details_movie_series)
     ImageView ivImageDetail;
@@ -52,6 +66,11 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
     @BindView(R.id.rb_rating_movie_tv_series)
     RatingBar rbRatingMovieSeries;
 
+    @BindView(R.id.rv_similiar_movies_series)
+    RecyclerView rvSimilarSection;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,25 +87,33 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                 }
         );
 
+
         if (b.getSerializable(Categories.MOVIE) != null) {
             movie = new Movie();
             movie = (Movie) b.getSerializable(Categories.MOVIE);
+            getMovieAccountState(movie.getId());
             updateMovieInfo();
+            updateMoviesStatusFavorite(movie.getId(), Categories.MOVIE, movie.isFavorite());
+            setupRecycleViewMovies();
+            getSimilarMovies(movie.getId());
+
         } else {
             tvSeries = new TvSeries();
             tvSeries = (TvSeries) b.getSerializable(Categories.TV_SERIES);
             updateTvSeriesInfo();
+            updateTvSeriesStatusFavorite(tvSeries.getId(), Categories.TV_SERIES, tvSeries.isFavorite());
+            setupRecycleViewTvSeries();
+            getSimilarTvSeries(tvSeries.getId());
         }
 
     }
 
-
     @OnClick(R.id.iv_image_poster_movie_series)
     void clickImage() {
         if (movie == null) {
-            Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite()), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this.getBaseContext(), String.valueOf(movie.isFavorite), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getBaseContext(), String.valueOf(movie.isFavorite()), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -143,9 +170,9 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
 
     void updateFavoriteInfo(String type) {
         if (type == Categories.MOVIE) {
-            tbFavoriteButton.setChecked(movie.isFavorite);
+            tbFavoriteButton.setChecked(movie.isFavorite());
         } else {
-            tbFavoriteButton.setChecked(tvSeries.isFavorite);
+            tbFavoriteButton.setChecked(tvSeries.isFavorite());
         }
     }
 
@@ -161,7 +188,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                 new Callback<TvSeries>() {
                     @Override
                     public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
-                        tvSeries.isFavorite = favorite;
+                        tvSeries.setFavorite(favorite);
+                        updateFavoriteInfo(Categories.TV_SERIES);
                     }
 
                     @Override
@@ -173,8 +201,149 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
 
     }
 
+    void setupRecycleViewTvSeries() {
+        mLayoutManagerSimilar = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvSimilarSection.setLayoutManager(mLayoutManagerSimilar);
+        mAdapterTvSeries = new AdapterSimilarTvSeriesList(new AdapterSimilarTvSeriesList.OnItemClickedListener() {
+            @Override
+            public void onItemClick(TvSeries tvSeries) {
+                Intent intent = new Intent(MovieTvSeriesDetailsActivity.this, MovieTvSeriesDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Categories.TV_SERIES, tvSeries);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
-    void updateMoviesStatusFavorite(int id, final String mediaType, final boolean favorite) {
+        rvSimilarSection.setAdapter(mAdapterTvSeries);
+
+        rvSimilarSection.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (mIsLoading || dx <= 0) {
+                    return;
+                }
+                int visibleItemCount = mLayoutManagerSimilar.getChildCount();
+                int totalItemCount = mLayoutManagerSimilar.getItemCount();
+                int pastVisiblesItems = mLayoutManagerSimilar.findFirstVisibleItemPosition();
+
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 5) {
+                    getSimilarTvSeries(tvSeries.getId());
+                }
+            }
+        });
+    }
+
+    void setupRecycleViewMovies() {
+        mLayoutManagerSimilar = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvSimilarSection.setLayoutManager(mLayoutManagerSimilar);
+        mAdapterMovies = new AdapterSimilarMovieList(new AdapterSimilarMovieList.OnItemClickedListener() {
+            @Override
+            public void onItemClick(Movie movie) {
+                Intent intent = new Intent(MovieTvSeriesDetailsActivity.this, MovieTvSeriesDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Categories.MOVIE, movie);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        rvSimilarSection.setAdapter(mAdapterMovies);
+
+        rvSimilarSection.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (mIsLoading || dx <= 0) {
+                    return;
+                }
+                int visibleItemCount = mLayoutManagerSimilar.getChildCount();
+                int totalItemCount = mLayoutManagerSimilar.getItemCount();
+                int pastVisiblesItems = mLayoutManagerSimilar.findFirstVisibleItemPosition();
+
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 5
+                        ) {
+                    getSimilarMovies(movie.getId());
+                }
+            }
+        });
+    }
+
+    void getSimilarTvSeries(int id) {
+        mCurrentPage++;
+        mIsLoading = true;
+        RequestManager.getInstance(getBaseContext()).querySimilarTvSeries(
+                id,
+                Util.getApiKey,
+                mCurrentPage,
+                new Callback<ResponseListTvSeries>() {
+                    @Override
+                    public void onResponse(Call<ResponseListTvSeries> call, Response<ResponseListTvSeries> response) {
+                        if (mCurrentPage == 1) {
+                            mAdapterTvSeries.setItems(response.body().getResultsList());
+                        } else {
+                            mAdapterTvSeries.addItems(response.body().getResultsList());
+                        }
+                        mIsLoading = false;
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseListTvSeries> call, Throwable t) {
+                        mIsLoading = false;
+                    }
+                }
+        );
+    }
+
+    void getSimilarMovies(int id) {
+        mCurrentPage++;
+        mIsLoading = true;
+        RequestManager.getInstance(getBaseContext()).querySimilarMovies(
+                id,
+                Util.getApiKey,
+                mCurrentPage,
+                new Callback<ResponseListMovies>() {
+                    @Override
+                    public void onResponse(Call<ResponseListMovies> call, Response<ResponseListMovies> response) {
+                        if (mCurrentPage == 1) {
+                            mAdapterMovies.setItems(response.body().getResultsList());
+                        } else {
+                            mAdapterMovies.addItems(response.body().getResultsList());
+                        }
+                        mIsLoading = false;
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseListMovies> call, Throwable t) {
+                        mIsLoading = false;
+                    }
+                }
+        );
+    }
+
+
+    void getMovieAccountState(int id) {
+        RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
+                id,
+                Util.getApiKey,
+                Util.getSessionId,
+                new Callback<AccountState>() {
+                    @Override
+                    public void onResponse(Call<AccountState> call, Response<AccountState> response) {
+                        movie.setFavorite(response.body().getFavorite());
+                        if (response.body().getRated() != null) {
+                            movie.setRated(response.body().getRated());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AccountState> call, Throwable t) {
+
+                    }
+                }
+        );
+    }
+
+    void updateMoviesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
                 Util.getApiKey,
                 Util.getSessionId,
@@ -185,7 +354,8 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                 new Callback<Movie>() {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
-                        movie.isFavorite = favorite;
+                        movie.setFavorite(favorite);
+                        updateFavoriteInfo(Categories.MOVIE);
                     }
 
                     @Override
@@ -204,9 +374,12 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         tvMovieSeriesTitle.setText(movie.getTitle());
         tvReleaseDate.setText(movie.getReleaseDate());
         tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
-        tbFavoriteButton.setChecked(movie.isFavorite);
-        // rbRatingMovieSeries.setRating(movie.getVoteAverage() / 2);
+        tbFavoriteButton.setChecked(movie.isFavorite());
+        if (movie.getRated() != null) {
+            rbRatingMovieSeries.setRating((movie.getRated().getValue()) / 2);
+        }
     }
+
 
     void updateTvSeriesInfo() {
         Glide.with(this).load(tvSeries.getPosterUrl()).into(ivImagePoster);
@@ -215,10 +388,9 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         tvMovieSeriesTitle.setText(tvSeries.getTitle());
         tvReleaseDate.setText(tvSeries.getFirst_air_date());
         tvVoteAverage.setText(String.valueOf(tvSeries.getVoteAverage()));
-        tbFavoriteButton.setChecked(tvSeries.isFavorite);
+        tbFavoriteButton.setChecked(tvSeries.isFavorite());
         //rbRatingMovieSeries.setRating(tvSeries.getVoteAverage() / 2);
     }
-
 
     @Override
     public void onBackPressed() {

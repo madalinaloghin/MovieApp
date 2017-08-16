@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context="com.madalinaloghin.movieapp.ui.activity.MovieTvSeriesDetailsActivity">
+    tools:context="com.madalinaloghin.movieapp.ui.activity.TvSeriesDetailsActivity">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_image_details_movie_series"
+            android:id="@+id/iv_image_banner_tv_series_details"
             android:layout_width="@dimen/iv_img_banner_movei_details_width"
             android:layout_height="@dimen/iv_img_banner_movie_details_height"
             android:layout_alignParentLeft="true"
@@ -21,7 +23,7 @@
             android:scaleType="fitStart" />
 
         <ImageView
-            android:id="@+id/iv_image_poster_movie_series"
+            android:id="@+id/iv_image_poster_tv_series_details"
             android:layout_width="@dimen/iv_img_details_width"
             android:layout_height="@dimen/iv_img_details_height"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
@@ -30,12 +32,12 @@
             android:contentDescription="@string/iv_content_description_details" />
 
         <ToggleButton
-            android:id="@+id/tb_favorite_movie_toggle"
+            android:id="@+id/tb_favorite_tv_series_details_toggle"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/iv_image_details_movie_series"
+            android:layout_below="@+id/iv_image_banner_tv_series_details"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
@@ -46,27 +48,27 @@
             android:textOn="@string/blank_space" />
 
         <ImageView
-            android:id="@+id/iv_add_to_list"
+            android:id="@+id/iv_add_to_list_tv_series_details"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_below="@id/iv_image_details_movie_series"
+            android:layout_below="@id/iv_image_banner_tv_series_details"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
-            android:layout_toLeftOf="@+id/tb_favorite_movie_toggle"
-            android:layout_toStartOf="@+id/tb_favorite_movie_toggle"
+            android:layout_toLeftOf="@+id/tb_favorite_tv_series_details_toggle"
+            android:layout_toStartOf="@+id/tb_favorite_tv_series_details_toggle"
             android:background="@drawable/ic_playlist_add_black_24dp"
             android:backgroundTint="@color/colorHighlight" />
 
 
         <TextView
-            android:id="@+id/tv_vote_average"
+            android:id="@+id/tv_vote_average_tv_series_details"
             style="@style/HeadlineFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tb_favorite_movie_toggle"
+            android:layout_below="@+id/tb_favorite_tv_series_details_toggle"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
@@ -74,23 +76,23 @@
             android:textColor="@color/colorHighlight" />
 
         <TextView
-            android:id="@+id/tv_release_date_movie_tv_series"
+            android:id="@+id/tv_release_date_tv_series_details"
             style="@style/Body1Font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_vote_average"
+            android:layout_below="@+id/tv_vote_average_tv_series_details"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left" />
 
         <android.support.v7.widget.AppCompatRatingBar
-            android:id="@+id/rb_rating_movie_tv_series"
+            android:id="@+id/rb_rating_tv_series_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_release_date_movie_tv_series"
+            android:layout_below="@+id/tv_release_date_tv_series_details"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
@@ -99,39 +101,39 @@
             android:stepSize="0.2" />
 
         <TextView
-            android:id="@+id/tv_title_movie_tv_series"
+            android:id="@+id/tv_title_tv_series_details"
             style="@style/HeadlineFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/iv_image_poster_movie_series"
-            android:layout_alignStart="@+id/iv_image_poster_movie_series"
-            android:layout_below="@id/rb_rating_movie_tv_series"
+            android:layout_alignLeft="@+id/iv_image_poster_tv_series_details"
+            android:layout_alignStart="@+id/iv_image_poster_tv_series_details"
+            android:layout_below="@id/rb_rating_tv_series_details"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_right_left"
             android:textColor="@color/colorHighlight" />
 
         <TextView
-            android:id="@+id/tv_description_movie_tv_series"
+            android:id="@+id/tv_description_tv_series_details"
             style="@style/Body1Font"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/iv_image_poster_movie_series"
-            android:layout_alignStart="@+id/iv_image_poster_movie_series"
-            android:layout_below="@+id/tv_title_movie_tv_series"
+            android:layout_alignLeft="@+id/iv_image_poster_tv_series_details"
+            android:layout_alignStart="@+id/iv_image_poster_tv_series_details"
+            android:layout_below="@+id/tv_title_tv_series_details"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom" />
 
 
         <TextView
-            android:id="@+id/tv_similar_section_title"
+            android:id="@+id/tv_similar_section_tv_series_details"
             style="@style/TitleFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/iv_image_poster_movie_series"
-            android:layout_alignStart="@+id/iv_image_poster_movie_series"
-            android:layout_below="@id/tv_description_movie_tv_series"
+            android:layout_alignLeft="@+id/iv_image_poster_tv_series_details"
+            android:layout_alignStart="@+id/iv_image_poster_tv_series_details"
+            android:layout_below="@id/tv_description_tv_series_details"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_right_left"
@@ -139,10 +141,10 @@
             android:textColor="@color/colorHighlight" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_similiar_movies_series"
+            android:id="@+id/rv_similiar_tv_series_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_similar_section_title"
+            android:layout_below="@+id/tv_similar_section_tv_series_details"
             android:layout_marginBottom="@dimen/iv_poster_details_page_margin_top_bottom"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
@@ -151,5 +153,6 @@
 
 
     </RelativeLayout>
+
 
 </ScrollView>

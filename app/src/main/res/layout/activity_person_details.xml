@@ -143,6 +143,31 @@
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginStart="@dimen/textview_margin_right_left"
             android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_other_images"
+            style="@style/SubHeadingFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_biography_person_value"
+            android:layout_marginLeft="@dimen/textview_margin_right_left"
+            android:layout_marginStart="@dimen/textview_margin_right_left"
+            android:text="@string/other_images"
+            android:textColor="@color/colorHighlight" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_images_persons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_other_images"
+            android:layout_marginBottom="@dimen/iv_poster_details_page_margin_top_bottom"
+            android:layout_marginEnd="@dimen/textview_margin_right_left"
+            android:layout_marginLeft="@dimen/textview_margin_right_left"
+            android:layout_marginRight="@dimen/textview_margin_right_left"
+            android:layout_marginStart="@dimen/textview_margin_right_left" />
+
     </RelativeLayout>
+
 
 </ScrollView>

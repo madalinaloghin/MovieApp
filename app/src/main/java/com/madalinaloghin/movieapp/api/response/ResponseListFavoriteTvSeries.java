@@ -19,9 +19,9 @@ public class ResponseListFavoriteTvSeries {
         return resultsList;
     }
 
-    void setFavoritesAtrib(){
-        for (TvSeries tv: resultsList) {
-            tv.isFavorite = true;
+    void setFavoritesAtrib() {
+        for (TvSeries tv : resultsList) {
+            tv.setFavorite(true);
         }
     }
 }

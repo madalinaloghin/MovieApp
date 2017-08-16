@@ -21,7 +21,7 @@ public class ResponseListFavoriteMovies {
 
     void setFavoritesAtrib(){
         for (Movie movie: resultsList) {
-            movie.isFavorite = true;
+            movie.setFavorite(true);
         }
     }
 }

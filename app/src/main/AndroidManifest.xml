@@ -42,7 +42,9 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.PersonDetailsActivity"></activity>
+        <activity android:name=".ui.activity.PersonDetailsActivity" />
+        <activity android:name=".ui.activity.MovieDetailsActivity" />
+        <activity android:name=".ui.activity.TvSeriesDetailsActivity"></activity>
     </application>
 
 </manifest>

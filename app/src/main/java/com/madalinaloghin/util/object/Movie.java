@@ -52,8 +52,27 @@ public class Movie implements Serializable {
     @SerializedName("status")
     private String status;
 
-    public boolean isFavorite;
 
+    private boolean isFavorite;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    private Rated rated;
+
+    public Rated getRated() {
+        return rated;
+    }
+
+    public void setRated(Rated rated) {
+        this.rated = rated;
+    }
 
     public int getId() {
         return id;

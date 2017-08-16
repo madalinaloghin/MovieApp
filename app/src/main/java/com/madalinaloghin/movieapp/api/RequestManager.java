@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.madalinaloghin.movieapp.api.response.ResponseImageList;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteMovies;
 import com.madalinaloghin.movieapp.api.response.ResponseListFavoriteTvSeries;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
@@ -15,6 +16,7 @@ import com.madalinaloghin.movieapp.api.response.ResponseMultiSearch;
 import com.madalinaloghin.movieapp.api.response.ResponseUserListDetails;
 import com.madalinaloghin.movieapp.api.response.ResponseUserLists;
 import com.madalinaloghin.util.Util;
+import com.madalinaloghin.util.object.AccountState;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
@@ -232,6 +234,45 @@ public class RequestManager {
         }
     }
 
+    public void querySimilarTvSeries(@NonNull final int tvId, @NonNull final String apiKey, @NonNull final int page, @Nullable Callback<ResponseListTvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListTvSeries> call = service.querySimilarTvSeries(tvId, apiKey, page);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
 
+
+    public void querySimilarMovies(@NonNull final int movieId, @NonNull final String apiKey, @NonNull final int page, @Nullable Callback<ResponseListMovies> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseListMovies> call = service.querySimilarMovies(movieId, apiKey, page);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryPersonImages(@NonNull final int personId, @NonNull final String apiKey, @Nullable Callback<ResponseImageList> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<ResponseImageList> call = service.queryPersonImages(personId, apiKey);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryMovieAccountState(@NonNull final int movieId, @NonNull final String apiKey, @NonNull final String sessionId, @Nullable Callback<AccountState> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<AccountState> call = service.queryMovieAccountStates(movieId, apiKey, sessionId);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void queryTvSeriesAccountState(@NonNull final int tvId, @NonNull final String apiKey, @NonNull final String sessionId, @Nullable Callback<AccountState> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<AccountState> call = service.queryTvSeriesAccountStates(tvId, apiKey, sessionId);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
 }
 

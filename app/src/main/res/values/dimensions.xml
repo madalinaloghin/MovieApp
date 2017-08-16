@@ -11,6 +11,10 @@
     <dimen name="iv_poster_popular_height">230dp</dimen>
 
 
+    <dimen name="iv_poster_popular_width_similar">100dp</dimen>
+    <dimen name="iv_poster_popular_height_similar">150dp</dimen>
+
+
     <dimen name="iv_img_details_width">130dp</dimen>
     <dimen name="iv_img_details_height">195dp</dimen>
 
