@@ -9,11 +9,11 @@ import com.google.gson.annotations.SerializedName;
 public class AccountState {
 
     @SerializedName("id")
-    private Long id;
+    private int id;
 
 
     @SerializedName("favorite")
-    private Boolean favorite;
+    private boolean favorite;
 
 
     @SerializedName("rated")
@@ -31,11 +31,12 @@ public class AccountState {
         return watchlist;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
     public Rated getRated() {
         return rated;
     }
+
 }

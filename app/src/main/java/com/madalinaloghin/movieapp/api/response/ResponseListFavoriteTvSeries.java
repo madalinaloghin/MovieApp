@@ -6,7 +6,7 @@ import com.madalinaloghin.util.object.TvSeries;
 import java.util.ArrayList;
 
 /**
- * Created by madalina.loghin on 8/4/2017.
+ * Created by madalina.loghin on 8/1/2017.
  */
 
 public class ResponseListFavoriteTvSeries {

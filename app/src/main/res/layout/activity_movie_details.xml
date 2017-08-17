@@ -96,8 +96,7 @@
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:scaleX="0.7"
-            android:scaleY="0.7"
-            android:stepSize="0.2" />
+            android:scaleY="0.7" />
 
         <TextView
             android:id="@+id/tv_title_movie_details"

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_movie_popular_home"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="0dp"
-    app:cardBackgroundColor="@color/colorPrimaryDark">
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -20,8 +20,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:contentDescription="@string/iv_content_description_details"
             android:minHeight="@dimen/iv_poster_popular_height"
-            android:minWidth="@dimen/iv_poster_popular_width"/>
+            android:minWidth="@dimen/iv_poster_popular_width" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

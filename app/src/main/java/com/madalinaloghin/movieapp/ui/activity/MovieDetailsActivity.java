@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +24,6 @@ import com.madalinaloghin.util.object.Rated;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +71,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ButterKnife.bind(this);
 
+        movie = new Movie();
+        movie = (Movie) b.getSerializable(Util.MOVIE);
+
         rbRatingMovieDetails.setOnRatingBarChangeListener(
                 new RatingBar.OnRatingBarChangeListener() {
                     @Override
@@ -80,34 +83,53 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 }
         );
 
-        movie = new Movie();
-        movie = (Movie) b.getSerializable(Util.MOVIE);
+        tbFavoriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, b);
+                tbFavoriteButton.setChecked(b);
+            }
+        });
+
         getMovieAccountState(movie.getId());
+
         updateMovieInfo();
+
         setupRecycleViewMovies();
         getSimilarMovies(movie.getId());
 
     }
 
 
-    @OnClick(R.id.iv_image_poster_movie_details)
-    void clickImage() {
-        Toast.makeText(this.getBaseContext(), String.valueOf(movie.isFavorite()), Toast.LENGTH_SHORT).show();
-    }
+    void getMovieAccountState(final int id) {
+        RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
+                id,
+                Util.API_KEY,
+                Util.SESSION_ID,
+                new Callback<AccountState>() {
+                    @Override
 
+                    public void onResponse(Call<AccountState> call, Response<AccountState> response) {
+                        AccountState ac = response.body();
+                        movie.setFavorite(response.body().getFavorite());
+                        movie.setRated(response.body().getRated());
 
-    @OnClick(R.id.tb_favorite_movie_details_toggle)
-    void onClickFavoriteButton() {
-        updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, tbFavoriteButton.isChecked());
-        tbFavoriteButton.setChecked(movie.isFavorite());
+                        updateMovieInfo();
+                    }
 
+                    @Override
+                    public void onFailure(Call<AccountState> call, Throwable t) {
+                        updateMovieInfo();
+                    }
+                }
+        );
     }
 
     void updateRatingBarValue(final float value) {
         RequestManager.getInstance(getBaseContext()).rateMovie(
                 Util.API_KEY,
                 Util.SESSION_ID,
-                value * 2,
+                value,
                 movie.getId(),
                 new Callback<Movie>() {
                     @Override
@@ -186,29 +208,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
 
-    void getMovieAccountState(int id) {
-        RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
-                id,
-                Util.API_KEY,
-                Util.SESSION_ID,
-                new Callback<AccountState>() {
-                    @Override
-                    public void onResponse(Call<AccountState> call, Response<AccountState> response) {
-                        movie.setFavorite(response.body().getFavorite());
-                        if (response.body().getRated() != null) {
-                            movie.setRated(response.body().getRated());
-                        }
-                        updateMovieInfo();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AccountState> call, Throwable t) {
-
-                    }
-                }
-        );
-    }
-
     void updateMoviesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
                 Util.API_KEY,
@@ -226,13 +225,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Movie> call, Throwable t) {
-
                     }
                 }
         );
 
     }
-
 
 
     void updateMovieInfo() {

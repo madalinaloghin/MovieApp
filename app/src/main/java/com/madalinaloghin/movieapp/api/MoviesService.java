@@ -198,8 +198,8 @@ public interface MoviesService {
 
     @GET("tv/{tv_id}/account_states")
     Call<AccountState> queryTvSeriesAccountStates(@Path("tv_id") int tvId,
-                                               @Query("api_key") String apiKey,
-                                               @Query("session_id") String sessionId);
+                                                  @Query("api_key") String apiKey,
+                                                  @Query("session_id") String sessionId);
 
 }
 

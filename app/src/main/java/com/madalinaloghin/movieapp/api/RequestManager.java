@@ -22,6 +22,8 @@ import com.madalinaloghin.util.object.Person;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -51,9 +53,17 @@ public class RequestManager {
                 .setLenient()
                 .create();
 
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(Util.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
     }
 
@@ -212,7 +222,7 @@ public class RequestManager {
 
     public void rateMovie(@NonNull final String apiKey, @NonNull final String sessionId, final float value, final int movieId, @Nullable Callback<Movie> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<Movie> call = service.updateRateMovie(movieId, apiKey, sessionId, value);
+        Call<Movie> call = service.updateRateMovie(movieId, apiKey, sessionId, value * 2);
         if (call != null) {
             call.enqueue(callback);
         }
@@ -220,7 +230,7 @@ public class RequestManager {
 
     public void rateTvSeries(@NonNull final String apiKey, @NonNull final String sessionId, final float value, final int tvId, @Nullable Callback<TvSeries> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);
-        Call<TvSeries> call = service.updateRateTvSeries(tvId, apiKey, sessionId, value);
+        Call<TvSeries> call = service.updateRateTvSeries(tvId, apiKey, sessionId, value * 2);
         if (call != null) {
             call.enqueue(callback);
         }

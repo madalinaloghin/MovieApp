@@ -4,8 +4,7 @@
     <item
         android:id="@+id/nav_menu_home_activity"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/home_activity"
-        />
+        android:title="@string/home_activity" />
 
     <item
         android:id="@+id/nav_menu_lists_activity"

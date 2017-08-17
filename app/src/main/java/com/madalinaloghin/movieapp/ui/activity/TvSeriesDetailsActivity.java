@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.madalinaloghin.movieapp.api.response.ResponseListTvSeries;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarTvSeriesList;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
+import com.madalinaloghin.util.object.Rated;
 import com.madalinaloghin.util.object.TvSeries;
 
 import butterknife.BindView;
@@ -75,10 +77,18 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
                 new RatingBar.OnRatingBarChangeListener() {
                     @Override
                     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                        updateRatingBarValue(v * 2);
+                        updateRatingBarValue(v);
                     }
                 }
         );
+
+        tbFavoriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                updateTvSeriesStatusFavorite(tvSeries.getId(), Util.TV_SERIES, tbFavoriteButton.isChecked());
+                tbFavoriteButton.setChecked(tvSeries.isFavorite());
+            }
+        });
 
         tvSeries = new TvSeries();
         tvSeries = (TvSeries) b.getSerializable(Util.TV_SERIES);
@@ -95,10 +105,25 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
         Toast.makeText(this.getBaseContext(), String.valueOf(tvSeries.isFavorite()), Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.tb_favorite_tv_series_details_toggle)
-    void onClickFavoriteButton() {
-        updateTvSeriesStatusFavorite(tvSeries.getId(), Util.TV_SERIES, tbFavoriteButton.isChecked());
-        tbFavoriteButton.setChecked(tvSeries.isFavorite());
+
+    void updateRatingBarValue(final float value) {
+        RequestManager.getInstance(getBaseContext()).rateTvSeries(
+                Util.API_KEY,
+                Util.SESSION_ID,
+                value,
+                tvSeries.getId(),
+                new Callback<TvSeries>() {
+                    @Override
+                    public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
+                        tvSeries.setRated(new Rated(value));
+                    }
+
+                    @Override
+                    public void onFailure(Call<TvSeries> call, Throwable t) {
+
+                    }
+                }
+        );
     }
 
 
@@ -125,26 +150,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
         );
     }
 
-    void updateRatingBarValue(float value) {
-        RequestManager.getInstance(getBaseContext()).rateTvSeries(
-                Util.API_KEY,
-                Util.SESSION_ID,
-                value,
-                tvSeries.getId(),
-                new Callback<TvSeries>() {
-                    @Override
-                    public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<TvSeries> call, Throwable t) {
-
-                    }
-                }
-        );
-    }
-
-    void updateTvSeriesStatusFavorite(int id, final String mediaType, final boolean favorite) {
+    void updateTvSeriesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markTvSeriesAsFavorite(
                 Util.API_KEY,
                 Util.SESSION_ID,

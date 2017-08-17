@@ -6,7 +6,7 @@ import com.madalinaloghin.util.object.Movie;
 import java.util.ArrayList;
 
 /**
- * Created by madalina.loghin on 8/7/2017.
+ * Created by madalina.loghin on 8/1/2017.
  */
 
 public class ResponseListFavoriteMovies {

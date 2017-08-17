@@ -56,7 +56,8 @@
             android:layout_toLeftOf="@+id/tb_favorite_movie_toggle"
             android:layout_toStartOf="@+id/tb_favorite_movie_toggle"
             android:background="@drawable/ic_playlist_add_black_24dp"
-            android:backgroundTint="@color/colorHighlight" />
+            android:backgroundTint="@color/colorHighlight"
+            android:contentDescription="@string/iv_content_description_details"/>
 
 
         <TextView

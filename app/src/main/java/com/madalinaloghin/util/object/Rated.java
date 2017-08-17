@@ -11,8 +11,9 @@ public class Rated {
     @SerializedName("value")
     private float value;
 
+
     public float getValue() {
-        return value;
+        return value ;
     }
 
     public Rated(float value) {
