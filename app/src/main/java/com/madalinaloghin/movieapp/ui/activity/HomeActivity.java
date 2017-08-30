@@ -29,6 +29,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.madalinaloghin.movieapp.R.id;
+import static com.madalinaloghin.movieapp.R.layout;
+
 public class HomeActivity extends BottomNavigationBaseActivity {
 
     RecyclerView rvActorsPopular;
@@ -57,15 +60,15 @@ public class HomeActivity extends BottomNavigationBaseActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_home);
+        super.onCreate(savedInstanceState, layout.activity_home);
 
         loadInfos();
     }
 
     public void loadInfos() {
-        rvActorsPopular = (RecyclerView) findViewById(R.id.rv_actors_popular);
-        rvMoviesPopular = (RecyclerView) findViewById(R.id.rv_movie_popular);
-        rvTvSeriesPopular = (RecyclerView) findViewById(R.id.rv_tv_series_popular);
+        rvActorsPopular = (RecyclerView) findViewById(id.rv_actors_popular);
+        rvMoviesPopular = (RecyclerView) findViewById(id.rv_movie_popular);
+        rvTvSeriesPopular = (RecyclerView) findViewById(id.rv_tv_series_popular);
 
         setupRecycleViewMovies();
         setupRecycleViewMTvSeries();
@@ -87,7 +90,7 @@ public class HomeActivity extends BottomNavigationBaseActivity {
         inflater.inflate(R.menu.menu_search_option, menu);
 
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        final SearchView searchView = (SearchView) menu.findItem(id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -124,6 +127,8 @@ public class HomeActivity extends BottomNavigationBaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Util.MOVIE, movie);
                 intent.putExtras(bundle);
+                //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,, "imageTransitionHomeScreen");
+                //    startActivity(intent,optionsCompat.toBundle());
                 startActivity(intent);
             }
         });

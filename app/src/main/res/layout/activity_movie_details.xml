@@ -28,7 +28,8 @@
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginStart="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/iv_img_details_width"
-            android:contentDescription="@string/iv_content_description_details" />
+            android:contentDescription="@string/iv_content_description_details"
+            android:transitionName="imageTransitionHomeScreen" />
 
         <ToggleButton
             android:id="@+id/tb_favorite_movie_details_toggle"

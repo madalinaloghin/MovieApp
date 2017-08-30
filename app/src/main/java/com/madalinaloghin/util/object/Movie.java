@@ -55,6 +55,11 @@ public class Movie implements Serializable {
 
     private boolean isFavorite;
 
+    @SerializedName("rated")
+    private Rated rated;
+
+
+
 
     public String getStatus() {
         return status;
@@ -63,8 +68,6 @@ public class Movie implements Serializable {
     public boolean isFavorite() {
         return isFavorite;
     }
-
-    private Rated rated;
 
     public Rated getRated() {
         return rated;
@@ -111,7 +114,6 @@ public class Movie implements Serializable {
         String url = "https://image.tmdb.org/t/p/w500" + imageUrl;
         return url;
     }
-
 
     public float getBudget() {
         return budget;

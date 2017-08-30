@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppDialogTheme"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    tools:context="com.madalinaloghin.movieapp.ui.fragment.FragmentAddToListDialog">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_add_to_lists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+
+</FrameLayout>

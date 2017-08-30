@@ -27,4 +27,7 @@
 
     <dimen name="minTabSize">130dp</dimen>
     <dimen name="maxTabSize">170dp</dimen>
+
+    <dimen name="view_picture_size">65dp</dimen>
+
 </resources>

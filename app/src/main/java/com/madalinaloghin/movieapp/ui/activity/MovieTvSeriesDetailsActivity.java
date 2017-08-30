@@ -329,7 +329,7 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
                     public void onResponse(Call<AccountState> call, Response<AccountState> response) {
                         movie.setFavorite(response.body().getFavorite());
                         if (response.body().getRated() != null) {
-                            movie.setRated(response.body().getRated());
+                           // movie.setRated(response.body().getRated());
                         }
                     }
 
@@ -373,9 +373,9 @@ public class MovieTvSeriesDetailsActivity extends AppCompatActivity {
         tvReleaseDate.setText(movie.getReleaseDate());
         tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
         tbFavoriteButton.setChecked(movie.isFavorite());
-        if (movie.getRated() != null) {
-            rbRatingMovieSeries.setRating((movie.getRated().getValue()) / 2);
-        }
+       // if (movie.getRated() != null) {
+            //rbRatingMovieSeries.setRating((movie.getRated().getValue()) / 2);
+      //  }
     }
 
 

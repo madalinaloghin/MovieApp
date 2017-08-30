@@ -25,10 +25,8 @@ import butterknife.ButterKnife;
 public class AdapterPersonImages extends RecyclerView.Adapter<AdapterPersonImages.ViewHolder> {
 
     private List<Images> mDataImages;
-    private OnItemClickedListener mListener;
 
-    public AdapterPersonImages(OnItemClickedListener listener) {
-        mListener = listener;
+    public AdapterPersonImages() {
     }
 
     public void setItems(@NonNull List<Images> data) {
@@ -43,8 +41,8 @@ public class AdapterPersonImages extends RecyclerView.Adapter<AdapterPersonImage
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_similars, parent, false);
-        return new ViewHolder(view, mListener);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_person_pictures, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -60,32 +58,17 @@ public class AdapterPersonImages extends RecyclerView.Adapter<AdapterPersonImage
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv_image_similar)
+        @BindView(R.id.iv_images_person)
         ImageView imgPerson;
 
-        private OnItemClickedListener mListener;
-
-        public ViewHolder(View itemView, OnItemClickedListener listener) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.mListener = listener;
         }
 
         public void bind(final Images image) {
             Glide.with(itemView.getContext()).load(image.getFilePath()).into(imgPerson);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onItemClick(image);
-                }
-            });
-
         }
     }
-
-    public interface OnItemClickedListener {
-        void onItemClick(Images image);
-    }
-
 
 }

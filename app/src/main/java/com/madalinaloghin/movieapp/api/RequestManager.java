@@ -19,6 +19,7 @@ import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
 import com.madalinaloghin.util.object.Movie;
 import com.madalinaloghin.util.object.Person;
+import com.madalinaloghin.util.object.Rated;
 import com.madalinaloghin.util.object.TvSeries;
 import com.madalinaloghin.util.object.User;
 
@@ -50,11 +51,12 @@ public class RequestManager {
     public RequestManager(Context context) {
         mAppContext = context.getApplicationContext();
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Rated.class, new Rated.RatedAdapter())
                 .setLenient()
                 .create();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
@@ -243,6 +245,23 @@ public class RequestManager {
             call.enqueue(callback);
         }
     }
+
+    public void deleteRatingMovie(@NonNull final String apiKey, @NonNull final String sessionId, final int movieId, @Nullable Callback<Movie> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<Movie> call = service.deleteMovieRate(movieId, apiKey, sessionId);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
+    public void deleteRatingTvSeries(@NonNull final String apiKey, @NonNull final String sessionId, final int tvId, @Nullable Callback<TvSeries> callback) {
+        MoviesService service = mRetrofit.create(MoviesService.class);
+        Call<TvSeries> call = service.deleteTvSeriesRate(tvId, apiKey, sessionId);
+        if (call != null) {
+            call.enqueue(callback);
+        }
+    }
+
 
     public void querySimilarTvSeries(final int tvId, @NonNull final String apiKey, final int page, @Nullable Callback<ResponseListTvSeries> callback) {
         MoviesService service = mRetrofit.create(MoviesService.class);

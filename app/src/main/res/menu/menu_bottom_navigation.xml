@@ -16,10 +16,5 @@
         android:icon="@drawable/ic_favorite_black_24dp"
         android:title="@string/favs_activity" />
 
-    <item
-        android:id="@+id/nav_menu_account_activity"
-        android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="@string/account_activity" />
-
 
 </menu>

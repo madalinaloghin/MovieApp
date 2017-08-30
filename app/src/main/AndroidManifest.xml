@@ -32,10 +32,6 @@
             android:name=".ui.activity.FavsActivity"
             android:label="@string/title_activity_favs"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.activity.AccountActivity"
-            android:label="@string/title_activity_account"
-            android:theme="@style/AppTheme" />
 
         <activity android:name=".ui.activity.MovieTvSeriesDetailsActivity" />
 

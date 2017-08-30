@@ -92,6 +92,7 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
 
         tvSeries = new TvSeries();
         tvSeries = (TvSeries) b.getSerializable(Util.TV_SERIES);
+
         getTvSeriesAccountState(tvSeries.getId());
         updateTvSeriesInfo();
         setupRecycleViewTvSeries();
@@ -107,23 +108,44 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
 
 
     void updateRatingBarValue(final float value) {
-        RequestManager.getInstance(getBaseContext()).rateTvSeries(
-                Util.API_KEY,
-                Util.SESSION_ID,
-                value,
-                tvSeries.getId(),
-                new Callback<TvSeries>() {
-                    @Override
-                    public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
-                        tvSeries.setRated(new Rated(value));
-                    }
+        if (value >= 0.0 && value < 0.5) {
+            RequestManager.getInstance(getBaseContext()).deleteRatingTvSeries(
+                    Util.API_KEY,
+                    Util.SESSION_ID,
+                    tvSeries.getId(),
+                    new Callback<TvSeries>() {
+                        @Override
+                        public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
+                            tvSeries.setRated(null);
+                        }
 
-                    @Override
-                    public void onFailure(Call<TvSeries> call, Throwable t) {
-
+                        @Override
+                        public void onFailure(Call<TvSeries> call, Throwable t) {
+                        }
                     }
-                }
-        );
+            );
+        } else {
+            RequestManager.getInstance(getBaseContext()).rateTvSeries(
+                    Util.API_KEY,
+                    Util.SESSION_ID,
+                    value,
+                    tvSeries.getId(),
+                    new Callback<TvSeries>() {
+                        @Override
+                        public void onResponse(Call<TvSeries> call, Response<TvSeries> response) {
+                            Rated rated = new Rated();
+                            rated.setValue(value);
+                            tvSeries.setRated(rated);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<TvSeries> call, Throwable t) {
+
+                        }
+                    }
+            );
+        }
     }
 
 

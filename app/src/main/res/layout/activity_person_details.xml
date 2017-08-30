@@ -10,26 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_images_persons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/textview_margin_top_bottom" />
+
         <TextView
             android:id="@+id/tv_person_name"
             style="@style/HeadlineFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/rv_images_persons"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginStart="@dimen/textview_margin_right_left"
-            android:layout_marginTop="@dimen/textview_margin_right_left"
+            android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:textColor="@color/colorHighlight" />
 
-        <ImageView
-            android:id="@+id/iv_person_image_details"
-            android:layout_width="@dimen/iv_img_details_width"
-            android:layout_height="@dimen/iv_img_details_height"
-            android:layout_below="@+id/tv_person_name"
+        <View
+            android:id="@+id/v_back"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_picture_size"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
-            android:layout_marginLeft="@dimen/textview_margin_right_left"
-            android:layout_marginStart="@dimen/textview_margin_right_left"
-            android:contentDescription="@string/iv_content_description_details" />
+            android:layout_marginTop="@dimen/iv_poster_popular_height"
+            android:alpha="0.3"
+            android:background="@color/colorAccent" />
 
         <TextView
             android:id="@+id/tv_birth_date"
@@ -38,12 +44,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_person_name"
+            android:layout_below="@+id/v_back"
             android:layout_marginEnd="@dimen/textview_margin_right_left"
             android:layout_marginRight="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:text="@string/birth_date"
-            android:textColor="@color/colorHighlight" />
+            android:textColor="@color/colorHighlight"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_birth_date_value"
@@ -92,44 +99,46 @@
             style="@style/SubHeadingFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_death_day_value"
-            android:layout_marginEnd="@dimen/textview_margin_right_left"
-            android:layout_marginRight="@dimen/textview_margin_right_left"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/v_back"
+            android:layout_marginLeft="@dimen/textview_margin_right_left"
+            android:layout_marginStart="@dimen/textview_margin_right_left"
             android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:text="@string/place_of_birth"
-            android:textColor="@color/colorHighlight" />
+            android:textColor="@color/colorHighlight"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_birthplace_person_value"
             style="@style/SubHeadingFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/tv_birth_date_value"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/tv_birthplace_person"
             android:layout_marginBottom="@dimen/textview_margin_top_bottom"
-            android:layout_marginEnd="@dimen/textview_margin_right_left"
-            android:layout_marginRight="@dimen/textview_margin_right_left"
-            android:layout_toEndOf="@+id/iv_person_image_details"
-            android:layout_toRightOf="@+id/iv_person_image_details"
+            android:layout_marginLeft="@dimen/textview_margin_right_left"
+            android:layout_marginStart="@dimen/textview_margin_right_left"
             android:gravity="end"
             android:maxLines="3"
             android:textColor="@color/colorAccent"
-            tools:text="somewhere " />
+            tools:text="somewhere" />
 
 
         <TextView
             android:id="@+id/tv_biography_person"
-            style="@style/SubHeadingFont"
+            style="@style/AppBarFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_person_image_details"
+            android:layout_below="@id/tv_birthplace_person_value"
             android:layout_marginLeft="@dimen/textview_margin_right_left"
             android:layout_marginStart="@dimen/textview_margin_right_left"
+            android:layout_marginTop="@dimen/textview_margin_top_bottom"
             android:text="@string/biography"
-            android:textColor="@color/colorHighlight" />
+            android:textColor="@color/colorHighlight"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_biography_person_value"
@@ -144,28 +153,6 @@
             android:layout_marginStart="@dimen/textview_margin_right_left"
             android:textColor="@color/colorAccent" />
 
-        <TextView
-            android:id="@+id/tv_other_images"
-            style="@style/SubHeadingFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_biography_person_value"
-            android:layout_marginLeft="@dimen/textview_margin_right_left"
-            android:layout_marginStart="@dimen/textview_margin_right_left"
-            android:text="@string/other_images"
-            android:textColor="@color/colorHighlight" />
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_images_persons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_other_images"
-            android:layout_marginBottom="@dimen/iv_poster_details_page_margin_top_bottom"
-            android:layout_marginEnd="@dimen/textview_margin_right_left"
-            android:layout_marginLeft="@dimen/textview_margin_right_left"
-            android:layout_marginRight="@dimen/textview_margin_right_left"
-            android:layout_marginStart="@dimen/textview_margin_right_left" />
 
     </RelativeLayout>
 

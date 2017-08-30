@@ -2,10 +2,12 @@ package com.madalinaloghin.movieapp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -17,6 +19,7 @@ import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
 import com.madalinaloghin.movieapp.api.response.ResponseListMovies;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterSimilarMovieList;
+import com.madalinaloghin.movieapp.ui.fragment.FragmentAddToListDialog;
 import com.madalinaloghin.util.Util;
 import com.madalinaloghin.util.object.AccountState;
 import com.madalinaloghin.util.object.Movie;
@@ -24,6 +27,7 @@ import com.madalinaloghin.util.object.Rated;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +39,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private AdapterSimilarMovieList mAdapterMovies;
     private boolean mIsLoading = false;
     private int mCurrentPage = 0;
+    private AlertDialog.Builder mAlertDialogBuilder;
+    private DialogFragment mDialogFragment;
 
     @BindView(R.id.iv_image_banner_movie_details)
     ImageView ivImageDetail;
@@ -64,6 +70,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     RecyclerView rvSimilarSection;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,19 +94,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 updateMoviesStatusFavorite(movie.getId(), Util.MOVIE, b);
-                tbFavoriteButton.setChecked(b);
             }
         });
 
+
         getMovieAccountState(movie.getId());
-
         updateMovieInfo();
-
         setupRecycleViewMovies();
         getSimilarMovies(movie.getId());
-
     }
 
+    @OnClick(R.id.iv_add_to_list_movie_details)
+    void addToListMoviesDialogFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment newFragment = FragmentAddToListDialog.newInstance(movie.getId());
+        newFragment.show(fm, "dialog");
+    }
 
     void getMovieAccountState(final int id) {
         RequestManager.getInstance(getBaseContext()).queryMovieAccountState(
@@ -108,12 +118,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Util.SESSION_ID,
                 new Callback<AccountState>() {
                     @Override
-
                     public void onResponse(Call<AccountState> call, Response<AccountState> response) {
-                        AccountState ac = response.body();
                         movie.setFavorite(response.body().getFavorite());
                         movie.setRated(response.body().getRated());
-
                         updateMovieInfo();
                     }
 
@@ -126,23 +133,44 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     void updateRatingBarValue(final float value) {
-        RequestManager.getInstance(getBaseContext()).rateMovie(
-                Util.API_KEY,
-                Util.SESSION_ID,
-                value,
-                movie.getId(),
-                new Callback<Movie>() {
-                    @Override
-                    public void onResponse(Call<Movie> call, Response<Movie> response) {
-                        movie.setRated(new Rated(value));
-                    }
+        if (value >= 0.0 && value < 0.5) {
+            RequestManager.getInstance(getBaseContext()).deleteRatingMovie(
+                    Util.API_KEY,
+                    Util.SESSION_ID,
+                    movie.getId(),
+                    new Callback<Movie>() {
+                        @Override
+                        public void onResponse(Call<Movie> call, Response<Movie> response) {
+                            movie.setRated(null);
+                        }
 
-                    @Override
-                    public void onFailure(Call<Movie> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<Movie> call, Throwable t) {
 
+                        }
                     }
-                }
-        );
+            );
+        } else {
+            RequestManager.getInstance(getBaseContext()).rateMovie(
+                    Util.API_KEY,
+                    Util.SESSION_ID,
+                    value,
+                    movie.getId(),
+                    new Callback<Movie>() {
+                        @Override
+                        public void onResponse(Call<Movie> call, Response<Movie> response) {
+                            Rated rated = new Rated();
+                            rated.setValue(value);
+                            movie.setRated(rated);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Movie> call, Throwable t) {
+
+                        }
+                    }
+            );
+        }
     }
 
 
@@ -207,7 +235,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         );
     }
 
-
     void updateMoviesStatusFavorite(final int id, final String mediaType, final boolean favorite) {
         RequestManager.getInstance(getBaseContext()).markMovieAsFavorite(
                 Util.API_KEY,
@@ -220,7 +247,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
                         movie.setFavorite(favorite);
-                        tbFavoriteButton.setChecked(movie.isFavorite());
                     }
 
                     @Override
@@ -243,6 +269,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (movie.getRated() != null) {
             rbRatingMovieDetails.setRating((movie.getRated().getValue()) / 2);
         }
+
     }
 
     @Override

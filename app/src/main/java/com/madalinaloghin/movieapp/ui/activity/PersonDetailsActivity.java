@@ -5,16 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.madalinaloghin.movieapp.R;
 import com.madalinaloghin.movieapp.api.RequestManager;
 import com.madalinaloghin.movieapp.api.response.ResponseImageList;
 import com.madalinaloghin.movieapp.ui.adapter.AdapterPersonImages;
 import com.madalinaloghin.util.Util;
-import com.madalinaloghin.util.object.Images;
 import com.madalinaloghin.util.object.Person;
 
 import butterknife.BindView;
@@ -32,8 +29,11 @@ public class PersonDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_person_name)
     TextView tvPersonName;
 
+    @BindView(R.id.tv_birth_date)
+    TextView tvBirthdate;
+
     @BindView(R.id.tv_birth_date_value)
-    TextView tvBirthDate;
+    TextView tvBirthDateValue;
 
     @BindView(R.id.tv_death_day_value)
     TextView tvDeathDayValue;
@@ -41,19 +41,20 @@ public class PersonDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_death_day)
     TextView tvDeathDay;
 
-    @BindView(R.id.tv_birthplace_person_value)
+    @BindView(R.id.tv_birthplace_person)
     TextView tvBirthPlace;
 
-    @BindView(R.id.tv_biography_person_value)
+    @BindView(R.id.tv_birthplace_person_value)
+    TextView tvBirthPlaceValue;
+
+    @BindView(R.id.tv_biography_person)
     TextView tvBiography;
 
-    @BindView(R.id.iv_person_image_details)
-    ImageView ivPersonImage;
-
+    @BindView(R.id.tv_biography_person_value)
+    TextView tvBiographyValue;
 
     @BindView(R.id.rv_images_persons)
     RecyclerView mRvImages;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,29 +92,43 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
 
     void updatePersonInfo(Person p) {
-        Glide.with(this).load(p.getImagePath()).into(ivPersonImage);
         tvPersonName.setText(p.getName());
-        tvBirthDate.setText(p.getBirthday());
+
+        if (p.getBirthday() == null) {
+            tvBirthDateValue.setText(" ");
+        } else {
+            tvBirthdate.setVisibility(View.VISIBLE);
+            tvBirthDateValue.setText(p.getBirthday());
+        }
+
         if (p.getDeathday() == null) {
             tvDeathDay.setText(" ");
         } else {
             tvDeathDay.setVisibility(View.VISIBLE);
             tvDeathDayValue.setText(p.getDeathday());
         }
-        tvBirthPlace.setText(p.getPlaceOfBirth());
-        tvBiography.setText(p.getBiography());
+
+        if (p.getPlaceOfBirth() == null) {
+            tvBirthPlace.setText(" ");
+        } else {
+            tvBirthPlace.setVisibility(View.VISIBLE);
+            tvBirthPlaceValue.setText(p.getPlaceOfBirth());
+        }
+
+        tvBiography.setVisibility(View.VISIBLE);
+
+        if (p.getBiography() == "") {
+            tvBiographyValue.setText(" No more details about this person. ");
+        } else {
+            tvBiographyValue.setText(p.getBiography());
+        }
 
     }
 
     void setupRecycleView() {
         mLayoutManagerImages = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvImages.setLayoutManager(mLayoutManagerImages);
-        mAdapterImages = new AdapterPersonImages(new AdapterPersonImages.OnItemClickedListener() {
-            @Override
-            public void onItemClick(Images image) {
-                Glide.with(getBaseContext()).load(image.getFilePath()).into(ivPersonImage);
-            }
-        });
+        mAdapterImages = new AdapterPersonImages();
         mRvImages.setAdapter(mAdapterImages);
 
     }

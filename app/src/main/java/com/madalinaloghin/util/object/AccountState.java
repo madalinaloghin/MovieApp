@@ -11,7 +11,6 @@ public class AccountState {
     @SerializedName("id")
     private int id;
 
-
     @SerializedName("favorite")
     private boolean favorite;
 
@@ -21,19 +20,20 @@ public class AccountState {
 
 
     @SerializedName("watchlist")
-    private Boolean watchlist;
+    private boolean watchlist;
 
-    public Boolean getFavorite() {
+    public boolean getFavorite() {
         return favorite;
     }
 
-    public Boolean getWatchlist() {
+    public boolean getWatchlist() {
         return watchlist;
     }
 
     public int getId() {
         return id;
     }
+
 
     public Rated getRated() {
         return rated;

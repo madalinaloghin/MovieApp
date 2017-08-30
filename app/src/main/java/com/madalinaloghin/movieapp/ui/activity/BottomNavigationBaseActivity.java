@@ -42,9 +42,6 @@ public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
             case FAVS:
                 navigation.setSelectedItemId(R.id.nav_menu_favorites_activity);
                 break;
-            case ACCOUNT:
-                navigation.setSelectedItemId(R.id.nav_menu_account_activity);
-                break;
         }
 
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,10 +61,6 @@ public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
                         return true;
                     case R.id.nav_menu_favorites_activity:
                         startActivity(new Intent(BottomNavigationBaseActivity.this, FavsActivity.class));
-                        overridePendingTransition();
-                        return true;
-                    case R.id.nav_menu_account_activity:
-                        startActivity(new Intent(BottomNavigationBaseActivity.this, AccountActivity.class));
                         overridePendingTransition();
                         return true;
                 }
