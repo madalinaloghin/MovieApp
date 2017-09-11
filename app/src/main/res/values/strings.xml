@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movie Database</string>
+    <string name="app_name">Movie Magic</string>
 
     <string name="hint_search">Search for movies,tv series or actors</string>
     <string name="api_key">d9695f4d017fcc9799ede07d46dd40c7</string>
@@ -49,7 +49,7 @@
 
     <string name="add_to_list_default_message">Add to list: </string>
     <string name="alert_dialog_ok">OK</string>
-    <string name="alert_dialog_cancel">CANCEL</string>
+    <string name="alert_dialog_cancel">Cancel</string>
     <string name="title_add_to_a_list">Add to a list:</string>
 
 </resources>

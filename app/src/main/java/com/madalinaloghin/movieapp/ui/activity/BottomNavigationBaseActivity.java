@@ -85,10 +85,9 @@ public abstract class BottomNavigationBaseActivity extends AppCompatActivity {
         overridePendingTransition(R.animator.no_anim, R.animator.no_anim);
     }
 
-    public static enum BottomNavActivityType {
+    public enum BottomNavActivityType {
         HOME,
         LISTS,
-        FAVS,
-        ACCOUNT
+        FAVS
     }
 }
